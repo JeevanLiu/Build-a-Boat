@@ -24,8 +24,23 @@ extends RigidBody3D
 @onready var sitting = false
 @onready var player = null
 
+# preview mode for before placing
+var previewMode = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if (previewMode):
+		$CollisionShape3D.queue_free() # no collision in preview
+		
+		var holoMaterial = ShaderMaterial.new()
+		holoMaterial.shader = load("res://Scripts/Shaders/hologram.gdshader")
+		$MeshInstance3D.set_surface_override_material(0, holoMaterial)
+		
+		'''var mat : Material = $MeshInstance3D.get_active_material(0)
+		mat.transparency = 1
+		mat.albedo_color.a = 0.5
+		mat.next_pass = ShaderMaterial.new()
+		mat.next_pass.shader = load("res://Scripts/Shaders/hologram.gdshader")'''
 	
 	# Connecting Chair Functions
 	if self.is_in_group("Sittable"):
@@ -42,10 +57,14 @@ func _physics_process(delta: float) -> void:
 	if inWater:
 		if direction == 0: # Forward
 			linear_velocity = waterFlowVelNorm
-		elif direction == -1: # Left
+		elif direction == -2: # Left
 			linear_velocity = waterFlowVelLeft
-		elif direction == 1: # Right
+		elif direction == 2: # Right
 			linear_velocity = waterFlowVelRight
+		elif direction == -1:
+			linear_velocity = waterFlowVelNorm + waterFlowVelLeft
+		elif direction == 1:
+			linear_velocity = waterFlowVelNorm + waterFlowVelRight
 	
 	# Block touching logic
 	if hit:
@@ -61,11 +80,14 @@ func _physics_process(delta: float) -> void:
 		if poisoned:
 			poisonTick()
 	
-	# Handles right click events
+	# Handles sitting related events
 	if player and Input.is_action_just_pressed("right_click"):
 		# Calls sitting when near chairs
 		if self.is_in_group("Sittable"):
 			sit()
+	
+	elif player and Input.is_action_just_pressed("ui_accept"):
+		sitting = false
 	
 	# Handles Chair events
 	if self.is_in_group("Sittable"):
@@ -81,17 +103,6 @@ func exitWater():
 	if touchWater <= 0:
 		inWater = false
 		linear_velocity = Vector3.ZERO
-func turn(lr: bool, ff: bool): # Where lr true/false = right/left, ff true/false = facing forward/not facing forward
-	if lr:
-		if ff:
-			direction = 1
-		else:
-			direction = 0
-	else:
-		if ff:
-			direction = -1
-		else:
-			direction = 0
 
 # Hitting a damaging object function
 func hitObject():
@@ -142,6 +153,7 @@ func _on_body_entered(body):
 	# Function determining if the player is nearby (body has a large radius around the block)
 	if body.is_in_group("player"):
 		player = body
+
 func _on_body_exited(body):
 	# 
 	if body == player:

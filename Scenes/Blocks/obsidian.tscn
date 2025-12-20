@@ -9,11 +9,10 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_cm8w1")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g44do"]
-size = Vector3(1, 0.5, 1)
 
 [node name="Obsidian" type="RigidBody3D" groups=["Blocks"]]
+freeze = true
 script = ExtResource("1_cm8w1")
-endurance = 4
 luck = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

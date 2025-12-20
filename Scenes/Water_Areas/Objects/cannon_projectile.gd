@@ -1,6 +1,6 @@
 extends RigidBody3D
 
-var speed = 25
+var speed = 50
 var direction
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

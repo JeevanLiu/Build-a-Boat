@@ -12,10 +12,11 @@ size = Vector3(1, 0.5, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_8qqjh"]
 size = Vector3(1, 0.5, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_05eoq"]
-size = Vector3(5, 5, 5)
+[sub_resource type="SphereShape3D" id="SphereShape3D_sfwi6"]
+radius = 3.0
 
 [node name="InfinityChair" type="RigidBody3D" groups=["Blocks", "Sittable"]]
+freeze = true
 script = ExtResource("1_sfwi6")
 health = 1.0
 endurance = -1.0
@@ -30,4 +31,4 @@ shape = SubResource("BoxShape3D_8qqjh")
 [node name="ChairArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ChairArea"]
-shape = SubResource("BoxShape3D_05eoq")
+shape = SubResource("SphereShape3D_sfwi6")

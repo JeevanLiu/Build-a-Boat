@@ -9,7 +9,7 @@ var damage_timer: Timer
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	damage_timer = Timer.new()
-	damage_timer.wait_time = 0.1    # Damage timer
+	damage_timer.wait_time = 0.25    # Damage timer
 	damage_timer.timeout.connect(_on_damage_timer_timeout)
 	add_child(damage_timer)
 

@@ -9,9 +9,10 @@ albedo_color = Color(1, 0.44646567, 0.95666283, 1)
 material = SubResource("StandardMaterial3D_aodlk")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vggnq"]
-size = Vector3(1, 0.5, 1)
 
 [node name="InfinityBlock" type="RigidBody3D" groups=["Blocks"]]
+mass = 100.0
+freeze = true
 script = ExtResource("1_aodlk")
 health = 1.0
 endurance = -1.0

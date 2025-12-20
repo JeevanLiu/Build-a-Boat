@@ -3,15 +3,17 @@
 [ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_wgqwl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wgqwl"]
-albedo_color = Color(0.9032738, 0.78220695, 0.49853104, 1)
+transparency = 1
+albedo_color = Color(0.9019608, 0.78039217, 0.49803922, 1)
+stencil_flags = 2
 
 [sub_resource type="BoxMesh" id="BoxMesh_4yl8j"]
 material = SubResource("StandardMaterial3D_wgqwl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_x2y8m"]
-size = Vector3(1, 0.5, 1)
 
 [node name="Block" type="RigidBody3D" groups=["Blocks"]]
+freeze = true
 script = ExtResource("1_wgqwl")
 health = 3.0
 

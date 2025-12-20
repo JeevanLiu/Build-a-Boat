@@ -1,0 +1,171 @@
+[gd_scene load_steps=22 format=3 uid="uid://cen2gx8h8vd8p"]
+
+[ext_resource type="Script" uid="uid://bluyjt2e8orxu" path="res://Scripts/area.gd" id="1_u0iqm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u0iqm"]
+albedo_color = Color(0.7019608, 0.57254905, 0.827451, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_pyiqr"]
+material = SubResource("StandardMaterial3D_u0iqm")
+size = Vector3(100, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cfbo6"]
+size = Vector3(100, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_348mh"]
+size = Vector3(100, 0.25, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xj8sb"]
+albedo_color = Color(0.22600415, 0.1068775, 0.031405326, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lpkhi"]
+material = SubResource("StandardMaterial3D_xj8sb")
+size = Vector3(100, 65, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ma63m"]
+size = Vector3(100, 65, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2nhcg"]
+albedo_color = Color(0.22600415, 0.1068775, 0.031405326, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nnl8q"]
+material = SubResource("StandardMaterial3D_2nhcg")
+size = Vector3(100, 65, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mnk87"]
+size = Vector3(100, 65, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pyiqr"]
+albedo_color = Color(0.22600415, 0.1068775, 0.031405326, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cfbo6"]
+material = SubResource("StandardMaterial3D_pyiqr")
+size = Vector3(50, 35, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xj8sb"]
+size = Vector3(50, 35, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lpkhi"]
+albedo_color = Color(0.22600415, 0.1068775, 0.031405326, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ma63m"]
+material = SubResource("StandardMaterial3D_lpkhi")
+size = Vector3(50, 35, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2nhcg"]
+size = Vector3(50, 35, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u0iqm"]
+size = Vector3(175, 90, 50)
+
+[sub_resource type="Animation" id="Animation_u0iqm"]
+resource_name = "Wave"
+length = 20.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Water:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 10, 15, 20),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, -30, 0), Vector3(0, -30, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_pyiqr"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Water:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -30, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pyiqr"]
+_data = {
+&"RESET": SubResource("Animation_pyiqr"),
+&"Wave": SubResource("Animation_u0iqm")
+}
+
+[node name="TidalArea" type="Node3D" groups=["hasRocks"]]
+script = ExtResource("1_u0iqm")
+numLilRocks = 5
+numBigRocks = 10
+
+[node name="Water" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -30, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Water"]
+mesh = SubResource("BoxMesh_pyiqr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water"]
+shape = SubResource("BoxShape3D_cfbo6")
+debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
+
+[node name="WaterArea" type="Area3D" parent="Water" groups=["water"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" groups=["water"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_348mh")
+
+[node name="RightWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 25.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RightWall"]
+mesh = SubResource("BoxMesh_lpkhi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightWall"]
+shape = SubResource("BoxShape3D_ma63m")
+
+[node name="LeftWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -25.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftWall"]
+mesh = SubResource("BoxMesh_nnl8q")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftWall"]
+shape = SubResource("BoxShape3D_mnk87")
+
+[node name="BackWall" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -50.5, -18, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BackWall"]
+mesh = SubResource("BoxMesh_cfbo6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BackWall"]
+shape = SubResource("BoxShape3D_xj8sb")
+
+[node name="FrontWall" type="StaticBody3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 50.5, -18, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FrontWall"]
+mesh = SubResource("BoxMesh_ma63m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FrontWall"]
+shape = SubResource("BoxShape3D_2nhcg")
+
+[node name="TideArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TideArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.5, 0)
+shape = SubResource("BoxShape3D_u0iqm")
+
+[node name="TideAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pyiqr")
+}
+playback_default_blend_time = 1.0
+
+[connection signal="body_entered" from="Water/WaterArea" to="." method="_on_water_area_body_entered"]
+[connection signal="body_exited" from="Water/WaterArea" to="." method="_on_water_area_body_exited"]
+[connection signal="body_entered" from="TideArea" to="." method="_on_tide_area_body_entered"]
+[connection signal="body_exited" from="TideArea" to="." method="_on_tide_area_body_exited"]

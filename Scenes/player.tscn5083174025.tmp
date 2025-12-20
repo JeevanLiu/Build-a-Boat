@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://bkdsnx3e8kqsg"]
+
+[ext_resource type="Script" uid="uid://bg2lnhwfrjje8" path="res://Scripts/player.gd" id="1_v0iea"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vigqh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e5alk"]
+albedo_color = Color(0, 0.7131188, 0.36542714, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mqyi5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_nsk3r"]
+radius = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_v0iea"]
+radius = 0.05
+height = 0.1
+radial_segments = 5
+rings = 5
+
+[node name="Player" type="CharacterBody3D" groups=["player"]]
+script = ExtResource("1_v0iea")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_vigqh")
+surface_material_override/0 = SubResource("StandardMaterial3D_e5alk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_mqyi5")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
+collision_mask = 16
+shape = SubResource("SphereShape3D_nsk3r")
+spring_length = 2.0
+
+[node name="Camera3D" type="Camera3D" parent="Node3D/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.9699231, 0.24341181, 0, -0.24341181, 0.9699231, 0, 0, 0)
+
+[node name="RayCast3D" type="RayCast3D" parent="Node3D/SpringArm3D/Camera3D"]
+
+[node name="Preview" type="MeshInstance3D" parent="Node3D/SpringArm3D/Camera3D/RayCast3D"]
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
+mesh = SubResource("SphereMesh_v0iea")
+skeleton = NodePath("../..")

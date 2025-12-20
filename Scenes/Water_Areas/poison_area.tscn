@@ -1,7 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://c3xbmjgrgj78e"]
+[gd_scene load_steps=11 format=3 uid="uid://c3xbmjgrgj78e"]
 
 [ext_resource type="Script" uid="uid://bluyjt2e8orxu" path="res://Scripts/area.gd" id="1_44pkh"]
-[ext_resource type="Script" uid="uid://bwpy4whef2q11" path="res://Scripts/water_area.gd" id="2_a3m0t"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_44pkh"]
 albedo_color = Color(0, 1, 0, 1)
@@ -48,7 +47,6 @@ debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
 
 [node name="WaterArea" type="Area3D" parent="Water" groups=["hasPoison", "water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-script = ExtResource("2_a3m0t")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -72,5 +70,5 @@ mesh = SubResource("BoxMesh_a07oa")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LeftWall"]
 shape = SubResource("BoxShape3D_jobx2")
 
-[connection signal="body_entered" from="Water/WaterArea" to="Water/WaterArea" method="_on_body_entered"]
-[connection signal="body_exited" from="Water/WaterArea" to="Water/WaterArea" method="_on_body_exited"]
+[connection signal="body_entered" from="Water/WaterArea" to="." method="_on_water_area_body_entered"]
+[connection signal="body_exited" from="Water/WaterArea" to="." method="_on_water_area_body_exited"]

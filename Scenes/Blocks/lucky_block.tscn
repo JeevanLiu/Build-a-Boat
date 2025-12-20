@@ -1,20 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://cji0fjmnsc46y"]
+[gd_scene load_steps=6 format=3 uid="uid://cji0fjmnsc46y"]
 
 [ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_0e10m"]
+[ext_resource type="Texture2D" uid="uid://bwyj1gvt3r4xr" path="res://Scenes/Blocks/Textures/Question Marks.png" id="2_lva47"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwg1m"]
 albedo_color = Color(3.7541986e-06, 0.7492293, 0.29367465, 1)
+albedo_texture = ExtResource("2_lva47")
 
 [sub_resource type="BoxMesh" id="BoxMesh_2c32c"]
 material = SubResource("StandardMaterial3D_uwg1m")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cll31"]
-size = Vector3(1, 0.5, 1)
 
 [node name="lucky_block" type="RigidBody3D" groups=["Blocks"]]
+freeze = true
 script = ExtResource("1_0e10m")
 health = 1.0
-luck = 69
+luck = 96
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_2c32c")

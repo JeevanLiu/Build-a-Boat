@@ -1,5 +1,6 @@
 extends CharacterBody3D
 
+@export var placeBlockDistance = 2
 @onready var sprint = 1
 @onready var CamRotation : Vector2 = Vector2(0.0, 0.0)
 @onready var sensitivity = 0.01
@@ -7,7 +8,7 @@ extends CharacterBody3D
 @onready var touchWater = 0
 @onready var hit = false
 
-@onready var waterDirection = 0
+@onready var direction = 0
 @onready var waterSpeed = 1
 
 # Going down the list...
@@ -18,6 +19,14 @@ extends CharacterBody3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 10
+
+# block placement
+signal placeBlock
+signal previewBlock
+signal unpreviewBlock
+signal scrollBlock
+
+var mousePos : Vector2
 
 # Handle Inputs
 func _input(event):
@@ -32,13 +41,35 @@ func _input(event):
 	
 	# Handles the camera... Thank you Jus
 	if (event is InputEventMouseMotion):
-		CamRotation += event.relative * sensitivity
-		CamRotation.y = clamp(CamRotation.y, -1.5, 1.5)
-		camera.transform.basis = Basis()
-		# rot cam on x
-		camera.rotate_object_local(Vector3(0,1,0),-CamRotation.x)
-		# rot cam on y
-		camera.rotate_object_local(Vector3(1,0,0),-CamRotation.y)
+		mousePos = event.position # save the mouse pos
+		if (Input.is_action_pressed("left_click")):
+			CamRotation += event.relative * sensitivity
+			CamRotation.y = clamp(CamRotation.y, -1.5, 1.5)
+			camera.transform.basis = Basis()
+			# rot cam on x
+			camera.rotate_object_local(Vector3(0,1,0),-CamRotation.x)
+			# rot cam on y
+			camera.rotate_object_local(Vector3(1,0,0),-CamRotation.y)
+	
+	# Place block
+	# if (buildable):
+	if (event is InputEventMouseButton and Input.is_action_just_pressed("right_click")):
+		if (Input.is_action_pressed("ready_block")):
+			var click_pos : Vector4 = getClickPosition(event.position)
+			# click_pos.w == 0, no hit, return
+			if (click_pos.w == 0): return
+			
+			# click_pos.w == 1, hit
+			var vec_pos := Vector3(click_pos.x, click_pos.y, click_pos.z)
+			placeBlock.emit(vec_pos, "")
+			
+	# Scrolls the block
+	if (event is InputEventMouseButton):
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			scrollBlock.emit(true)
+
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			scrollBlock.emit(false)
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -46,13 +77,13 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 	
 	# From Jus:
-	# Get the input direction and handle the movement/deceleration.
+	# Get the input direcdtion and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	var direction : Vector3 = (camera.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	if direction:
-		velocity.x = direction.x * SPEED * sprint
-		velocity.z = direction.z * SPEED * sprint
+	var moveDirection : Vector3 = (camera.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	if moveDirection:
+		velocity.x = moveDirection.x * SPEED * sprint
+		velocity.z = moveDirection.z * SPEED * sprint
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
@@ -61,13 +92,31 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor() and inWater:
 		# Do damage
 		
-		if waterDirection == 0: # Forward
+		if direction == 0: # Forward
 			self.position.x += 0.1 * waterSpeed
-		elif waterDirection == -1: # Left
+		elif direction == -2: # Left
 			self.position.z -= 0.1 * waterSpeed
-		elif waterDirection == 1: # Right
+		elif direction == 2: # Right
 			self.position.z += 0.1 * waterSpeed
+		elif direction == 1: # Forward/Right
+			self.position.x += 0.1 * waterSpeed
+			self.position.z += 0.1 * waterSpeed
+		elif direction == -1: # Forward/Left
+			self.position.x += 0.1 * waterSpeed
+			self.position.z -= 0.1 * waterSpeed
+	
+	# block preview
+	# if (buildable):
+	if (Input.is_action_pressed("ready_block")):
+		var click_pos : Vector4 = getClickPosition(mousePos)
+		# click_pos.w == 0, no hit, return
+		if (click_pos.w == 0): return
 		
+		# click_pos.w == 1, hit
+		var vec_pos := Vector3(click_pos.x, click_pos.y, click_pos.z)
+		previewBlock.emit(vec_pos, "")
+	else:
+		unpreviewBlock.emit()
 	
 	move_and_slide()
 
@@ -81,17 +130,6 @@ func exitWater():
 	touchWater -= 1
 	if touchWater <= 0:
 		inWater = false
-func turn(lr: bool, ff: bool): # Where lr true/false = right/left, ff true/false = facing forward/not facing forward
-	if lr:
-		if ff:
-			waterDirection = 1
-		else:
-			waterDirection = 0
-	else:
-		if ff:
-			waterDirection = -1
-		else:
-			waterDirection = 0
 
 # Hitting a damaging object function
 func hitObject():
@@ -113,3 +151,20 @@ func changeSpeed():
 		waterSpeed = 7.5
 	elif waterSpeed == 7.5:
 		waterSpeed = 1
+
+
+# click screen input
+func getClickPosition(pos : Vector2):
+	var cam = $Node3D/SpringArm3D/Camera3D
+	var ray = $Node3D/SpringArm3D/Camera3D/RayCast3D
+	ray.global_rotation = Vector3(0.0, 0.0, 0.0)
+	ray.target_position = cam.project_ray_normal(pos) * placeBlockDistance
+	ray.force_raycast_update()
+	# if no collision then return with all zeros
+	if (!ray.is_colliding()): return Vector4(0.0, 0.0, 0.0, 0.0)
+	
+	# if collision, return collision (and w = 1 for success)
+	# new location is collision point plus half a unit in face normal direction
+	var hit_loc = ray.get_collision_point() + (0.5 * ray.get_collision_normal())
+	
+	return Vector4(hit_loc.x, hit_loc.y, hit_loc.z, 1.0)

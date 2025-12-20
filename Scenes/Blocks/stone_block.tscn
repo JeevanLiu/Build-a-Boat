@@ -9,11 +9,10 @@ albedo_color = Color(0.26657522, 0.2665752, 0.2665752, 1)
 material = SubResource("StandardMaterial3D_h6uup")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7lsil"]
-size = Vector3(1, 0.5, 1)
 
 [node name="stone_block" type="RigidBody3D" groups=["Blocks"]]
+freeze = true
 script = ExtResource("1_h6uup")
-endurance = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_g5fvj")

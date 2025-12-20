@@ -1,7 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://c3ijwc32e372n"]
 
 [ext_resource type="Script" uid="uid://bluyjt2e8orxu" path="res://Scripts/area.gd" id="1_nj3d2"]
-[ext_resource type="Script" uid="uid://bwpy4whef2q11" path="res://Scripts/water_area.gd" id="2_7s3ht"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2mnms"]
 albedo_color = Color(0.69411767, 0, 0, 1)
@@ -33,11 +32,14 @@ size = Vector3(50, 70, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_m2hf4"]
 size = Vector3(50, 70, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_l48ry"]
-material = SubResource("StandardMaterial3D_esurj")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hjor7"]
+albedo_color = Color(0.22600415, 0.1068775, 0.031405326, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7s3ht"]
+material = SubResource("StandardMaterial3D_hjor7")
 size = Vector3(50, 35, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_6dna4"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_2obto"]
 size = Vector3(50, 35, 1)
 
 [node name="DropArea" type="Node3D"]
@@ -56,7 +58,6 @@ debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
 
 [node name="WaterArea" type="Area3D" parent="Water" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-script = ExtResource("2_7s3ht")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -84,10 +85,10 @@ shape = SubResource("BoxShape3D_m2hf4")
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -25.5, 17, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BackWall"]
-mesh = SubResource("BoxMesh_l48ry")
+mesh = SubResource("BoxMesh_7s3ht")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BackWall"]
-shape = SubResource("BoxShape3D_6dna4")
+shape = SubResource("BoxShape3D_2obto")
 
-[connection signal="body_entered" from="Water/WaterArea" to="Water/WaterArea" method="_on_body_entered"]
-[connection signal="body_exited" from="Water/WaterArea" to="Water/WaterArea" method="_on_body_exited"]
+[connection signal="body_entered" from="Water/WaterArea" to="." method="_on_water_area_body_entered"]
+[connection signal="body_exited" from="Water/WaterArea" to="." method="_on_water_area_body_exited"]
