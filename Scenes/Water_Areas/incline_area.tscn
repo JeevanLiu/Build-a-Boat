@@ -35,7 +35,7 @@ size = Vector3(146.19, 35, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_8u08v"]
 size = Vector3(146.19, 35, 1)
 
-[node name="InclineArea" type="Node3D" groups=["hasRocks"]]
+[node name="InclineArea" type="Node3D" groups=["Incline", "hasRocks"]]
 transform = Transform3D(0.9396926, -0.34202012, 0, 0.34202012, 0.9396926, 0, 0, 0, 1, 0, 25, 0)
 script = ExtResource("1_2p6xh")
 numLilRocks = 30

@@ -10,7 +10,10 @@ stencil_flags = 2
 [sub_resource type="BoxMesh" id="BoxMesh_u7hcm"]
 material = SubResource("StandardMaterial3D_7fs7w")
 
-[node name="Block2" instance=ExtResource("1_7fs7w")]
+[node name="WoodBlock" instance=ExtResource("1_7fs7w")]
+health = 10.0
+endurance = 0.5
+luck = 5
 
 [node name="MeshInstance3D" parent="." index="0"]
 mesh = SubResource("BoxMesh_u7hcm")

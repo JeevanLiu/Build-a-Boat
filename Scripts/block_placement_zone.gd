@@ -6,12 +6,13 @@ extends Node3D
 @onready var luckyBlock = preload("res://Scenes/Blocks/lucky_block.tscn")
 @onready var obsidian = preload("res://Scenes/Blocks/obsidian.tscn")
 @onready var chair = preload("res://Scenes/Blocks/basic_chair.tscn")
+@onready var woodBlock = preload("res://Scenes/Blocks/wood_block.tscn")
 
 # Dev Block (maybe fun gamemode later)
 @onready var infinityBlock = preload("res://Scenes/Blocks/infinity_block.tscn")
 @onready var infinityChair = preload("res://Scenes/Blocks/infinity_chair.tscn")
 
-@onready var blocks = [block, stoneBlock, luckyBlock, obsidian, chair, infinityBlock, infinityChair]
+@onready var blocks = [block, stoneBlock, luckyBlock, obsidian, chair, woodBlock, infinityBlock, infinityChair]
 @onready var blockIndex = 0
 @onready var test_blocc = blocks[blockIndex]
 
@@ -30,7 +31,6 @@ var max : Vector3
 func _ready() -> void:
 	min = ($PlacementZoneRange.global_position - $PlacementZoneRange.shape.size*.5).round()
 	max = ($PlacementZoneRange.global_position + $PlacementZoneRange.shape.size*.5).round()
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -76,11 +76,11 @@ func deletePreviewBlock():
 
 func scrollBlock(up: bool):
 	if up:
-		blockIndex += 1
+		blockIndex += 0.5
 	else:
-		blockIndex -= 1
+		blockIndex -= 0.5
 	if blockIndex < 0:
-		blockIndex = blocks.size() - 1
+		blockIndex = blocks.size() - 0.5
 	elif blockIndex == blocks.size():
 		blockIndex = 0
 	test_blocc = blocks[blockIndex]

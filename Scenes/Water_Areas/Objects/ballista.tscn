@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://4g10aefairju"]
+
+[ext_resource type="Script" uid="uid://cymkfutmxcv15" path="res://Scenes/Water_Areas/Objects/evil_cannon.gd" id="1_qvot3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hb6id"]
+albedo_color = Color(0.6392157, 0.2627451, 0.078431375, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wgvwu"]
+material = SubResource("StandardMaterial3D_hb6id")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lb1qt"]
+size = Vector3(45, 75, 75)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qvot3"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 20.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qvot3"]
+height = 20.0
+radius = 1.0
+
+[node name="Ballista" type="StaticBody3D"]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
+script = ExtResource("1_qvot3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_wgvwu")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("BoxShape3D_lb1qt")
+
+[node name="TowerMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -10.5, 0, 0)
+mesh = SubResource("CylinderMesh_qvot3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -10.5, 0, 0)
+shape = SubResource("CylinderShape3D_qvot3")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

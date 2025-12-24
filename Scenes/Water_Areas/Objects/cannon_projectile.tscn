@@ -2,25 +2,25 @@
 
 [ext_resource type="Script" uid="uid://2d46iuqjs4rm" path="res://Scenes/Water_Areas/Objects/cannon_projectile.gd" id="1_o7avw"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_75i8m"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o7avw"]
 albedo_color = Color(0, 0, 0, 1)
 
-[sub_resource type="SphereMesh" id="SphereMesh_o7avw"]
-material = SubResource("StandardMaterial3D_75i8m")
+[sub_resource type="SphereMesh" id="SphereMesh_42v2x"]
+material = SubResource("StandardMaterial3D_o7avw")
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_42v2x"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_xg6ob"]
 radius = 0.52
 
 [node name="CannonProjectile" type="RigidBody3D"]
 script = ExtResource("1_o7avw")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_o7avw")
+mesh = SubResource("SphereMesh_42v2x")
 
 [node name="Area3D" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
-shape = SubResource("SphereShape3D_42v2x")
+shape = SubResource("SphereShape3D_xg6ob")
 debug_fill = false
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

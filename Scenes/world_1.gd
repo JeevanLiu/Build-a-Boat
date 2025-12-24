@@ -11,24 +11,15 @@ var cornerAreaScene = preload("res://Scenes/Water_Areas/corner_area.tscn")
 var fastAreaScene = preload("res://Scenes/Water_Areas/fast_area.tscn")
 var evilCannonAreaScene = preload("res://Scenes/Water_Areas/cannon_area.tscn")
 var tidalAreaScene = preload("res://Scenes/Water_Areas/tidal_area.tscn")
+var crazyAreaScene = preload("res://Scenes/Water_Areas/crazy_area.tscn") # add more objects when i make them
 # Handled separately
 var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 
 # Functions for calling each scene
-@onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene]
-#    
-#    
+@onready var possibleAreas = [evilCannonAreaScene]
+#    basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, 
+#    , tidalAreaScene, crazyAreaScene
 
-# Types of blocks
-@onready var block = preload("res://Scenes/Blocks/block.tscn")
-@onready var stoneBlock = preload("res://Scenes/Blocks/stone_block.tscn")
-@onready var luckyBlock = preload("res://Scenes/Blocks/lucky_block.tscn")
-@onready var obsidian = preload("res://Scenes/Blocks/obsidian.tscn")
-@onready var chair = preload("res://Scenes/Blocks/basic_chair.tscn")
-
-# Dev Block (maybe fun gamemode later)
-@onready var infinityBlock = preload("res://Scenes/Blocks/infinity_block.tscn")
-@onready var infinityChair = preload("res://Scenes/Blocks/infinity_chair.tscn")
 
 @onready var numAreas = 5 # Change to make more areas spawn
 @onready var areaList = [] # List of procedurally generated areas
@@ -72,18 +63,6 @@ func scrollBlock(up: bool):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
-
-# Handle Inputs
-func _input(event):
-	if Input.is_action_just_pressed("Launch"):
-		if !launched:
-			launched = true
-			$LaunchAnimation.play("Launch")
-			
-			# Unfreezes blocks when the water shows up
-			await get_tree().create_timer(0.5).timeout
-			connectBlocks()
-		
 
 func loadArea(areaType: PackedScene):
 	# Sets up newArea
@@ -200,3 +179,12 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 func _on_water_area_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player") or body.is_in_group("Blocks"):
 		body.exitWater()
+
+func launch():
+	launched = true
+	player.launched = true
+	$LaunchAnimation.play("Launch")
+	
+	# Unfreezes blocks when the water shows up
+	await get_tree().create_timer(0.5).timeout
+	connectBlocks()

@@ -48,7 +48,7 @@ mesh = SubResource("BoxMesh_ft6pb")
 shape = SubResource("BoxShape3D_7gdxb")
 debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
 
-[node name="WaterArea" type="Area3D" parent="Water" groups=["Corner", "water"]]
+[node name="WaterArea" type="Area3D" parent="Water" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" groups=["Corner", "water"]]

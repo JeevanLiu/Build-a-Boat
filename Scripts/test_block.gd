@@ -137,11 +137,17 @@ func evilCannonHit():
 		print("evil cannon hit!", health)
 
 # Fast area functions
-func changeSpeed():
+func changeSpeed(area: bool): # True = fastArea, false = crazyArea
 	if waterFlowVelNorm == Vector3(6.0, 0.0, 0.0):
-		waterFlowVelNorm = Vector3(30.0, 0.0, 0.0)
-		waterFlowVelLeft = Vector3(0.0, 0.0, -30.0)
-		waterFlowVelRight = Vector3(0.0, 0.0, 30.0)
+		if area:
+			waterFlowVelNorm = Vector3(30.0, 0.0, 0.0)
+			waterFlowVelLeft = Vector3(0.0, 0.0, -30.0)
+			waterFlowVelRight = Vector3(0.0, 0.0, 30.0)
+		else:
+			waterFlowVelNorm = Vector3(12.5, 0.0, 0.0)
+			waterFlowVelLeft = Vector3(0.0, 0.0, -12.5)
+			waterFlowVelRight = Vector3(0.0, 0.0, 12.5)
+
 	else:
 		waterFlowVelNorm = Vector3(6.0, 0.0, 0.0)
 		waterFlowVelRight = Vector3(0.0, 0.0, 6.0)

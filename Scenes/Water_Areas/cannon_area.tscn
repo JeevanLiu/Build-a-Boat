@@ -39,7 +39,8 @@ size = Vector3(100, 35, 1)
 script = ExtResource("1_s73cs")
 numLilRocks = 0
 numBigRocks = 0
-numEvilCannons = 20
+numEvilCannons = 12
+numBallistas = 2
 
 [node name="Water" type="StaticBody3D" parent="."]
 

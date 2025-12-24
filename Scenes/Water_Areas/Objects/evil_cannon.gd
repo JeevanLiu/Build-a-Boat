@@ -1,7 +1,12 @@
 extends StaticBody3D
 
 # Cannon projectile
-var projectile = preload("res://Scenes/Water_Areas/Objects/cannon_projectile.tscn")
+var cannonProj = preload("res://Scenes/Water_Areas/Objects/cannon_projectile.tscn")
+
+# Ballista arrow
+var ballistaProj = preload("res://Scenes/Water_Areas/Objects/ballista_arrow.tscn")
+
+var projectile = cannonProj # As a failsafe base
 
 # Shooting mechanism important variables
 var fireTimer = true
@@ -18,6 +23,9 @@ func _ready() -> void:
 	elif self.get_parent().get_parent().direction == 1:
 		leftOffset = Vector3(-1, 0, 0)
 		rightOffset = Vector3(1, 0, 0)
+	
+	if self.name == "Ballista":
+		projectile = ballistaProj
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -49,8 +57,9 @@ func fireProjectile(target: Vector3):
 	else:
 		offset = leftOffset
 	
+	if self.name == "Ballista":
+		offset *= 2
+	
 	get_parent().add_child(proj)
 	proj.global_position = self.global_position + offset
 	proj.setTarget(target)
-	
-	print("SHOOTING!")

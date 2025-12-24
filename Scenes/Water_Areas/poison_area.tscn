@@ -32,7 +32,7 @@ size = Vector3(50, 35, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_jobx2"]
 size = Vector3(50, 35, 1)
 
-[node name="PoisonArea" type="Node3D"]
+[node name="PoisonArea" type="Node3D" groups=["hasPoison"]]
 script = ExtResource("1_44pkh")
 numLilRocks = 15
 
@@ -45,7 +45,7 @@ mesh = SubResource("BoxMesh_44pkh")
 shape = SubResource("BoxShape3D_a3m0t")
 debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
 
-[node name="WaterArea" type="Area3D" parent="Water" groups=["hasPoison", "water"]]
+[node name="WaterArea" type="Area3D" parent="Water" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" groups=["water"]]

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://cq2t5l52igo0a"]
+
+[ext_resource type="Script" uid="uid://2d46iuqjs4rm" path="res://Scenes/Water_Areas/Objects/cannon_projectile.gd" id="1_l8gbg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ty1mb"]
+albedo_color = Color(0.85490197, 0.33333334, 0.33333334, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_3wtuw"]
+material = SubResource("StandardMaterial3D_ty1mb")
+radius = 0.25
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ntui1"]
+radius = 0.25
+
+[node name="BallistaArrow" type="RigidBody3D"]
+script = ExtResource("1_l8gbg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_3wtuw")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_ntui1")
+debug_fill = false
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

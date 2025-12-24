@@ -7,6 +7,7 @@ extends Node3D
 # Specific Events
 @onready var acidCloud = preload("res://Scenes/Water_Areas/Objects/acid_cloud.tscn")
 @onready var evilCannon = preload("res://Scenes/Water_Areas/Objects/evil_cannon.tscn")
+@onready var ballista = preload("res://Scenes/Water_Areas/Objects/ballista.tscn")
 
 # Number of rocks
 @export var numLilRocks = 10
@@ -15,6 +16,7 @@ extends Node3D
 # Number of specific obstaces
 @export var numAcidClouds = 0
 @export var numEvilCannons = 0
+@export var numBallistas = 0
 
 # Variable(s) for the water area
 # List of blocks in the area
@@ -31,6 +33,7 @@ func _ready() -> void:
 	loadRocks(l, w, h)
 	loadClouds(l, w)
 	loadCannons(l, w)
+	loadBallistas(l, w)
 		
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -90,11 +93,19 @@ func loadCannons(l: int, w: int):
 		# Makes newCannon a child of the scene
 		add_child(newCannon)
 
+func loadBallistas(l: int, w: int):
+	for i in range(numBallistas):
+		# Sets up newBallista
+		var newBallista = ballista.instantiate()
+		# Sets up the position of the newLilRock
+		newBallista.position = Vector3(randi_range(-l, l), randf_range(5, 25), randi_range(-w, w))
+		
+		# Makes newLilRock a child of the scene
+		add_child(newBallista)
 
 func _on_win_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		print("You win")
-
 
 func _on_water_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player") or body.is_in_group("Blocks"):
@@ -114,7 +125,10 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 			body.enterPoison()
 		
 		if self.is_in_group("SpeedUp"):
-			body.changeSpeed()
+			if self.name == "FastArea":
+				body.changeSpeed(true)
+			else:
+				body.changeSpeed(false)
 		
 		# Corner turning
 		if self.is_in_group("Corner"):
@@ -122,7 +136,6 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 				body.direction = -1
 			elif (selfDir == 0) or (is_equal_approx(selfDir, PI)): # Entire area facing right, or forward turning right
 				body.direction = 1
-
 
 func _on_water_area_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player") or body.is_in_group("Blocks"):
@@ -134,9 +147,7 @@ func _on_water_area_body_exited(body: Node3D) -> void:
 			body.exitPoison()
 		
 		if self.is_in_group("SpeedUp"):
-			body.changeSpeed()
-
-
+			body.changeSpeed(true) # Inside does not matter
 
 func _on_tide_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):

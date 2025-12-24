@@ -11,6 +11,10 @@ extends CharacterBody3D
 @onready var direction = 0
 @onready var waterSpeed = 1
 
+# UI Variables
+@onready var blocks = []
+@onready var launched = false
+
 # Going down the list...
 @onready var camera = $Node3D
 
@@ -120,6 +124,34 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	var bpz = get_parent().get_node("BlockPlacementZone")
+	for block in bpz.blocks:
+		var path = block.resource_path
+		var name = path.get_file().get_basename()
+		var count = -1
+		name[0] = name[0].to_upper()
+		for char in name:
+			count += 1
+			if char == "_":
+				name[count] = " "
+		blocks.append(name)
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	if !launched:
+		var bpz = get_parent().get_node("BlockPlacementZone")
+		$"Current Block".text = "Current block = " + str(blocks[bpz.blockIndex])
+	else:
+		$LaunchButton.hide()
+		$"Current Block".text = ""
+
+
+
+
+
 # General Functions
 
 # Interact with water function
@@ -146,10 +178,13 @@ func poisonTick(): # CURRENTLY EMPTY
 	pass
 
 # Fast area functions
-func changeSpeed():
+func changeSpeed(area: bool): # True = fastArea, False = crazyArea
 	if waterSpeed == 1:
-		waterSpeed = 7.5
-	elif waterSpeed == 7.5:
+		if area:
+			waterSpeed = 7.5
+		else:
+			waterSpeed = 3
+	else:
 		waterSpeed = 1
 
 
@@ -168,3 +203,7 @@ func getClickPosition(pos : Vector2):
 	var hit_loc = ray.get_collision_point() + (0.5 * ray.get_collision_normal())
 	
 	return Vector4(hit_loc.x, hit_loc.y, hit_loc.z, 1.0)
+
+
+func _on_launch_button_pressed() -> void:
+	get_parent().launch()
