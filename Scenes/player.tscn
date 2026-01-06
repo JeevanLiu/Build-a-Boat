@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://bkdsnx3e8kqsg"]
+[gd_scene load_steps=9 format=3 uid="uid://bkdsnx3e8kqsg"]
 
 [ext_resource type="Script" uid="uid://bg2lnhwfrjje8" path="res://Scripts/player.gd" id="1_v0iea"]
+[ext_resource type="PackedScene" uid="uid://b77et8g4b8k33" path="res://Scenes/gacha.tscn" id="2_cvnsp"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vigqh"]
 
@@ -31,21 +32,21 @@ surface_material_override/0 = SubResource("StandardMaterial3D_e5alk")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_mqyi5")
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="Camera" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="SpringArm3D" type="SpringArm3D" parent="Node3D"]
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
 collision_mask = 16
 shape = SubResource("SphereShape3D_nsk3r")
 spring_length = 2.0
 
-[node name="Camera3D" type="Camera3D" parent="Node3D/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="Camera/SpringArm3D"]
 transform = Transform3D(1, 0, 0, 0, 0.9699231, 0.24341181, 0, -0.24341181, 0.9699231, 0, 0, 0)
 
-[node name="RayCast3D" type="RayCast3D" parent="Node3D/SpringArm3D/Camera3D"]
+[node name="RayCast3D" type="RayCast3D" parent="Camera/SpringArm3D/Camera3D"]
 
-[node name="Preview" type="MeshInstance3D" parent="Node3D/SpringArm3D/Camera3D/RayCast3D"]
+[node name="Preview" type="MeshInstance3D" parent="Camera/SpringArm3D/Camera3D/RayCast3D"]
 transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("SphereMesh_v0iea")
 skeleton = NodePath("../..")
@@ -71,5 +72,7 @@ offset_right = 1132.0
 offset_bottom = 354.0
 theme = SubResource("Theme_v0iea")
 text = " Launch "
+
+[node name="Gacha" parent="." instance=ExtResource("2_cvnsp")]
 
 [connection signal="pressed" from="LaunchButton" to="." method="_on_launch_button_pressed"]

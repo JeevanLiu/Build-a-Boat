@@ -11,12 +11,16 @@ extends CharacterBody3D
 @onready var direction = 0
 @onready var waterSpeed = 1
 
+@onready var blockCountList = [55, 55, 55, 55, 55, 55, 55, 55]
+# Decrement during placement, read off of a file or something, add when gachad/bought
+# But yeah base is 1 for now, 0 later
+
 # UI Variables
 @onready var blocks = []
-@onready var launched = false
 
 # Going down the list...
-@onready var camera = $Node3D
+@onready var camera = $Camera
+@onready var bpz = $"../BlockPlacementZone"
 
 # Area Specific Variables
 @onready var poisoned = false
@@ -127,7 +131,7 @@ func _physics_process(delta: float) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var bpz = get_parent().get_node("BlockPlacementZone")
+	
 	for block in bpz.blocks:
 		var path = block.resource_path
 		var name = path.get_file().get_basename()
@@ -141,9 +145,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if !launched:
+	if !Globals.launched:
 		var bpz = get_parent().get_node("BlockPlacementZone")
-		$"Current Block".text = "Current block = " + str(blocks[bpz.blockIndex])
+		$"Current Block".text = "Current block = " + str(blocks[bpz.blockIndex]) + "\n     " + str(blockCountList[bpz.blockIndex])
 	else:
 		$LaunchButton.hide()
 		$"Current Block".text = ""
@@ -190,8 +194,8 @@ func changeSpeed(area: bool): # True = fastArea, False = crazyArea
 
 # click screen input
 func getClickPosition(pos : Vector2):
-	var cam = $Node3D/SpringArm3D/Camera3D
-	var ray = $Node3D/SpringArm3D/Camera3D/RayCast3D
+	var cam = $Camera/SpringArm3D/Camera3D
+	var ray = $Camera/SpringArm3D/Camera3D/RayCast3D
 	ray.global_rotation = Vector3(0.0, 0.0, 0.0)
 	ray.target_position = cam.project_ray_normal(pos) * placeBlockDistance
 	ray.force_raycast_update()

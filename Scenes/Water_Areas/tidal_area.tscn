@@ -58,6 +58,20 @@ size = Vector3(50, 35, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_u0iqm"]
 size = Vector3(175, 90, 50)
 
+[sub_resource type="Animation" id="Animation_pyiqr"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Water:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -30, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="Animation" id="Animation_u0iqm"]
 resource_name = "Wave"
 length = 20.0
@@ -75,20 +89,6 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, -30, 0), Vector3(0, -30, 0), Vector3(0, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_pyiqr"]
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Water:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, -30, 0), Vector3(0, 0, 0)]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pyiqr"]
 _data = {
 &"RESET": SubResource("Animation_pyiqr"),
@@ -102,6 +102,8 @@ numBigRocks = 10
 
 [node name="Water" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -30, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Water"]
 mesh = SubResource("BoxMesh_pyiqr")
@@ -112,6 +114,8 @@ debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
 
 [node name="WaterArea" type="Area3D" parent="Water" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -119,6 +123,8 @@ shape = SubResource("BoxShape3D_348mh")
 
 [node name="RightWall" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 25.5)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RightWall"]
 mesh = SubResource("BoxMesh_lpkhi")
@@ -128,6 +134,8 @@ shape = SubResource("BoxShape3D_ma63m")
 
 [node name="LeftWall" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -25.5)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LeftWall"]
 mesh = SubResource("BoxMesh_nnl8q")
@@ -137,6 +145,8 @@ shape = SubResource("BoxShape3D_mnk87")
 
 [node name="BackWall" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -50.5, -18, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="BackWall"]
 mesh = SubResource("BoxMesh_cfbo6")
@@ -146,6 +156,8 @@ shape = SubResource("BoxShape3D_xj8sb")
 
 [node name="FrontWall" type="StaticBody3D" parent="."]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 50.5, -18, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="FrontWall"]
 mesh = SubResource("BoxMesh_ma63m")
@@ -154,6 +166,8 @@ mesh = SubResource("BoxMesh_ma63m")
 shape = SubResource("BoxShape3D_2nhcg")
 
 [node name="TideArea" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TideArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.5, 0)

@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_2tuti"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_qq626"]
-size = Vector3(1, 0.5, 1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_2tuti"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_55cx1"]
 size = Vector3(1, 0.5, 1)
@@ -14,18 +13,17 @@ albedo_color = Color(0.61843055, 0.1732918, 0, 1)
 [sub_resource type="SphereShape3D" id="SphereShape3D_2tuti"]
 radius = 3.0
 
-[node name="Chair" type="RigidBody3D" groups=["Blocks", "Sittable"]]
-freeze = true
+[node name="Chair" type="CollisionShape3D" groups=["Blocks", "Sittable"]]
+shape = SubResource("BoxShape3D_2tuti")
 script = ExtResource("1_2tuti")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_qq626")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_55cx1")
 surface_material_override/0 = SubResource("StandardMaterial3D_e6na5")
 
 [node name="ChairArea" type="Area3D" parent="."]
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ChairArea"]
 shape = SubResource("SphereShape3D_2tuti")

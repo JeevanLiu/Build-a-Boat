@@ -15,6 +15,10 @@ run/main_scene="uid://b20hckk2j0msd"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Globals="*res://Scripts/globals.gd"
+
 [global_group]
 
 player=""
@@ -22,6 +26,8 @@ Blocks=""
 Sittable="Things you can sit on"
 Corner=""
 SpeedUp=""
+Ship=""
+Rocks=""
 
 [input]
 

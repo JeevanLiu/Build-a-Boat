@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3 uid="uid://b77et8g4b8k33"]
+
+[ext_resource type="Script" uid="uid://cciydwndmjjhf" path="res://gacha.gd" id="1_ughmx"]
+
+[node name="Gacha" type="Node2D"]
+script = ExtResource("1_ughmx")
+
+[node name="Shop" type="Button" parent="."]
+offset_left = 15.0
+offset_top = 600.0
+offset_right = 79.0
+offset_bottom = 631.0
+text = "  Shop  "
+metadata/_edit_use_anchors_ = true
+
+[node name="Background" type="ColorRect" parent="."]
+visible = false
+offset_left = 80.0
+offset_top = 80.0
+offset_right = 1080.0
+offset_bottom = 580.0
+color = Color(0.8627451, 0.5058824, 0.30980393, 0.5764706)
+
+[node name="Gacha Button" type="Button" parent="."]
+visible = false
+offset_left = 555.0
+offset_top = 360.0
+offset_right = 628.0
+offset_bottom = 410.0
+text = "  Gacha  "
+metadata/_edit_use_anchors_ = true
+
+[node name="ExitShop" type="Button" parent="."]
+visible = false
+offset_left = 1012.0
+offset_top = 87.0
+offset_right = 1074.0
+offset_bottom = 118.0
+text = " Close  "
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="Shop" to="." method="_on_shop_pressed"]
+[connection signal="pressed" from="Gacha Button" to="." method="_on_gacha_button_pressed"]
+[connection signal="pressed" from="ExitShop" to="." method="_on_exit_shop_pressed"]

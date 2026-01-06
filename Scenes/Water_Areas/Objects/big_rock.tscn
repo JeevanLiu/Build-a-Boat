@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://bkow8nvco7qlm"]
+[gd_scene load_steps=5 format=3 uid="uid://bkow8nvco7qlm"]
 
 [ext_resource type="Script" uid="uid://cqol7rrfx6gpw" path="res://Scenes/Water_Areas/rock_area.gd" id="1_unua7"]
 
@@ -12,11 +12,11 @@ albedo_color = Color(0.12633577, 0.12796718, 0.1361576, 1)
 material = SubResource("StandardMaterial3D_grpf8")
 size = Vector3(5, 10, 5)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_3pi7w"]
-size = Vector3(5, 10, 5)
-
-[node name="BigRock" type="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 0.5729186, 0.81961226, 0, -0.81961226, 0.5729186, 59.503254, 1.9612637, 0)
+[node name="BigRock" type="StaticBody3D" groups=["Rocks"]]
+transform = Transform3D(1, 0, 0, 0, 0.5729186, 0.81961226, 0, -0.81961226, 0.5729186, 0, 0, 0)
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_unua7")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_d74md")
@@ -24,15 +24,4 @@ shape = SubResource("BoxShape3D_d74md")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_onb0f")
 
-[node name="BRArea" type="Area3D" parent="."]
-script = ExtResource("1_unua7")
-health = 4
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="BRArea"]
-shape = SubResource("BoxShape3D_3pi7w")
-
-[node name="damage_timer" type="Timer" parent="BRArea"]
-
-[connection signal="body_entered" from="BRArea" to="BRArea" method="_on_body_entered"]
-[connection signal="body_exited" from="BRArea" to="BRArea" method="_on_body_exited"]
-[connection signal="timeout" from="BRArea/damage_timer" to="BRArea" method="_on_damage_timer_timeout"]
+[node name="DamageTimer" type="Timer" parent="."]

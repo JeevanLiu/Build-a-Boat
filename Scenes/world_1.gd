@@ -16,12 +16,12 @@ var crazyAreaScene = preload("res://Scenes/Water_Areas/crazy_area.tscn") # add m
 var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 
 # Functions for calling each scene
-@onready var possibleAreas = [evilCannonAreaScene]
-#    basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, 
-#    , tidalAreaScene, crazyAreaScene
+@onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene, crazyAreaScene]
+#    
+#    
 
 
-@onready var numAreas = 5 # Change to make more areas spawn
+@onready var numAreas = 50 # Change to make more areas spawn
 @onready var areaList = [] # List of procedurally generated areas
 @onready var totalSpaceX = 0 # Displacement between areas on the X
 @onready var totalSpaceY = 0 # Displacement between areas on the Y
@@ -29,9 +29,8 @@ var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 @onready var direction = 0 # 0 = forward, -1 = left, 1 = right
 @onready var nextArea = 1 # Ensures the first level is a basic level
 
-@onready var launched = false
-
 @onready var player = $Player
+@onready var ship = $Ship
 @onready var blockZone = $BlockPlacementZone
 
 # Called when the node enters the scene tree for the first time.
@@ -135,42 +134,6 @@ func loadArea(areaType: PackedScene):
 	# Makes newArea a child of the scene
 	add_child(newArea)
 
-func connectBlocks():
-	var blockList = []
-	for block in get_children():
-		if block is RigidBody3D:
-			blockList.append(block)
-			block.freeze = false
-	for blockA in blockList:
-		for blockB in blockList:
-			if abs(blockB.global_position - blockA.global_position) <= Vector3(1, 1, 1): 
-				var joint = Generic6DOFJoint3D.new()
-				add_child(joint)
-				joint.node_a = blockA.get_path()
-				joint.node_b = blockB.get_path()
-				
-				joint.set_flag_x(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
-				joint.set_flag_y(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
-				joint.set_flag_z(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_LIMIT, true)
-				
-				joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_LOWER_LIMIT, 0)
-				joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_UPPER_LIMIT, 0)
-				joint.set_param_y(Generic6DOFJoint3D.PARAM_LINEAR_LOWER_LIMIT, 0)
-				joint.set_param_y(Generic6DOFJoint3D.PARAM_LINEAR_UPPER_LIMIT, 0)
-				joint.set_param_z(Generic6DOFJoint3D.PARAM_LINEAR_LOWER_LIMIT, 0)
-				joint.set_param_z(Generic6DOFJoint3D.PARAM_LINEAR_UPPER_LIMIT, 0)
-				
-				joint.set_flag_x(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_SPRING, true)
-				joint.set_flag_y(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_SPRING, true)
-				joint.set_flag_z(Generic6DOFJoint3D.FLAG_ENABLE_LINEAR_SPRING, true)
-				joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_STIFFNESS, 0.0)
-				joint.set_param_x(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.0)
-				joint.set_param_y(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_STIFFNESS, 0.0)
-				joint.set_param_y(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.0)
-				joint.set_param_z(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_STIFFNESS, 0.0)
-				joint.set_param_z(Generic6DOFJoint3D.PARAM_LINEAR_SPRING_DAMPING, 0.0)
-				
-
 
 func _on_water_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player") or body.is_in_group("Blocks"):
@@ -181,10 +144,9 @@ func _on_water_area_body_exited(body: Node3D) -> void:
 		body.exitWater()
 
 func launch():
-	launched = true
-	player.launched = true
+	Globals.launched = true
 	$LaunchAnimation.play("Launch")
 	
 	# Unfreezes blocks when the water shows up
 	await get_tree().create_timer(0.5).timeout
-	connectBlocks()
+	ship.freeze = false

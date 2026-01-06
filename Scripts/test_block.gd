@@ -1,4 +1,4 @@
-extends RigidBody3D
+extends CollisionShape3D
 
 # Health - Hits the object can take
 # Endurance - Makes the block sturdier (in case I wanna have upgrades of sorts or health restore stuff)
@@ -7,13 +7,8 @@ extends RigidBody3D
 @export var endurance = 1.0
 @export var luck = 1
 
-@onready var hit = false
+@onready var damageTouching = []
 @onready var inWater = false
-@onready var touchWater = 0
-@onready var direction = 0
-@onready var waterFlowVelNorm = Vector3(6.0, 0.0, 0.0)
-@onready var waterFlowVelRight = Vector3(0.0, 0.0, 6.0)
-@onready var waterFlowVelLeft = Vector3(0.0, 0.0, -6.0)
 
 # Area Specific Variables
 @onready var poisoned = false
@@ -30,7 +25,7 @@ var previewMode = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if (previewMode):
-		$CollisionShape3D.queue_free() # no collision in preview
+		self.set_deferred("disabled", true) # no collision in preview
 		
 		var holoMaterial = ShaderMaterial.new()
 		holoMaterial.shader = load("res://Scripts/Shaders/hologram.gdshader")
@@ -52,28 +47,17 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	# Kill the block when it dies
 	dies()
-		
-	# Water touching logic
-	if inWater:
-		if direction == 0: # Forward
-			linear_velocity = waterFlowVelNorm
-		elif direction == -2: # Left
-			linear_velocity = waterFlowVelLeft
-		elif direction == 2: # Right
-			linear_velocity = waterFlowVelRight
-		elif direction == -1:
-			linear_velocity = waterFlowVelNorm + waterFlowVelLeft
-		elif direction == 1:
-			linear_velocity = waterFlowVelNorm + waterFlowVelRight
 	
-	# Block touching logic
-	if hit:
-		# Luck logic:
-		if randf_range(0, 100) > luck:
-			health -= (1.0 / endurance)
-			print("Damage taken, new health = ", health)
-		else:
-			print("Lucky break")
+	# Block damage logic
+	if damageTouching:
+		for body in damageTouching:
+			body.damage()
+			# Luck logic:
+			if randf_range(0, 100) > luck:
+				health -= (1.0 / endurance)
+				print("Damage taken, new health = ", health)
+			else:
+				print("Lucky break")
 	
 	# Poison logic
 	if int(delta) % 60 == 0:
@@ -92,24 +76,14 @@ func _physics_process(delta: float) -> void:
 	# Handles Chair events
 	if self.is_in_group("Sittable"):
 		if sitting and player:
-			player.global_position = self.global_position + Vector3(0, 1.25, 0)
+			player.rotation = self.rotation
+			
+			var normOffset = Vector3(0, 2, 0)
+			
+			var rotatedOffset = self.global_transform.basis * normOffset
+			
+			player.global_position = self.global_position + rotatedOffset
 
-# Interact with water function
-func enterWater():
-	touchWater += 1
-	inWater = true
-func exitWater():
-	touchWater -= 1
-	if touchWater <= 0:
-		inWater = false
-		linear_velocity = Vector3.ZERO
-
-# Hitting a damaging object function
-func hitObject():
-	hit = true
-	print("Hit: Health before = ", health)
-func exitObject():
-	hit = false
 
 # Taking acid rain damage
 func acidHit():
@@ -122,7 +96,7 @@ func dies():
 	if health <= 0:
 		queue_free()
 
-# Poison functions
+# Poison functions REWORK POISON I GOT RID OF THE THING THAT MAKES IT WORK EARLIER
 func enterPoison():
 	poisoned = true
 func exitPoison():
@@ -135,23 +109,6 @@ func evilCannonHit():
 	if randf_range(0, 100) > luck:
 		health -= (4.0 / endurance)
 		print("evil cannon hit!", health)
-
-# Fast area functions
-func changeSpeed(area: bool): # True = fastArea, false = crazyArea
-	if waterFlowVelNorm == Vector3(6.0, 0.0, 0.0):
-		if area:
-			waterFlowVelNorm = Vector3(30.0, 0.0, 0.0)
-			waterFlowVelLeft = Vector3(0.0, 0.0, -30.0)
-			waterFlowVelRight = Vector3(0.0, 0.0, 30.0)
-		else:
-			waterFlowVelNorm = Vector3(12.5, 0.0, 0.0)
-			waterFlowVelLeft = Vector3(0.0, 0.0, -12.5)
-			waterFlowVelRight = Vector3(0.0, 0.0, 12.5)
-
-	else:
-		waterFlowVelNorm = Vector3(6.0, 0.0, 0.0)
-		waterFlowVelRight = Vector3(0.0, 0.0, 6.0)
-		waterFlowVelLeft = Vector3(0.0, 0.0, -6.0)
 
 # Block Specific Functions
 
@@ -170,3 +127,18 @@ func _on_body_exited(body):
 # Chair Sitting Function
 func sit():
 	sitting = !sitting
+	if sitting:
+		player.set_collision_layer_value(2, true)
+		player.set_collision_layer_value(1, false)
+	else:
+		player.set_collision_layer_value(1, true)
+		player.set_collision_layer_value(2, false)
+
+# Damage function
+func _on_damage_area_body_entered(body: Node3D) -> void:
+	if body.is_in_group("Rocks"):
+		damageTouching.append(body)
+
+func _on_damage_area_body_exited(body: Node3D) -> void:
+	if body.is_in_group("Rocks"):
+		damageTouching.erase(body)

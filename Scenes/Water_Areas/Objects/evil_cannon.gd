@@ -30,7 +30,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if !bodyList.is_empty():
+	if !bodyList.is_empty() and Globals.launched:
 		if fireTimer:
 			fireTimer = false
 			var idealBody = bodyList.pick_random()

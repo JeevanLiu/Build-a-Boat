@@ -17,6 +17,7 @@ extends Node3D
 @onready var test_blocc = blocks[blockIndex]
 
 @onready var player = $"../Player"
+@onready var ship = $"../Ship"
 
 # funny preview blocc
 var preview_blocc
@@ -42,14 +43,18 @@ func notValidLocation(location : Vector3):
 	return false
 
 func placeBlock(location : Vector3, id : String):
-	location = location.round()
-	print(min, location, max)
-	if (notValidLocation(location)): return
-	
-	var blocc = test_blocc.instantiate()
-	blocc.previewMode = false
-	blocc.global_position = location
-	get_parent().add_child(blocc)
+	player.blockCountList[blockIndex] -= 1
+	if player.blockCountList[blockIndex] < 0:
+		player.blockCountList[blockIndex] += 1
+	else:
+		location = location.round()
+		print(min, location, max)
+		if (notValidLocation(location)): return
+		
+		var blocc = test_blocc.instantiate()
+		blocc.previewMode = false
+		blocc.global_position = location
+		ship.add_child(blocc)
 
 #region previewBlock
 
@@ -66,7 +71,7 @@ func createPreviewBlock():
 	
 	preview_blocc = test_blocc.instantiate()
 	preview_blocc.previewMode = true
-	get_parent().add_child(preview_blocc)
+	ship.add_child(preview_blocc)
 
 func deletePreviewBlock():
 	if (preview_blocc):

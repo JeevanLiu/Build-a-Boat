@@ -18,10 +18,6 @@ extends Node3D
 @export var numEvilCannons = 0
 @export var numBallistas = 0
 
-# Variable(s) for the water area
-# List of blocks in the area
-@onready var contactList = [] 
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,11 +30,8 @@ func _ready() -> void:
 	loadClouds(l, w)
 	loadCannons(l, w)
 	loadBallistas(l, w)
-		
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+# PRE-GAME LOADING FUNCTIONS
 
 func loadRocks(l: int, w: int, h: int):
 	for i in range(numLilRocks):
@@ -103,14 +96,16 @@ func loadBallistas(l: int, w: int):
 		# Makes newLilRock a child of the scene
 		add_child(newBallista)
 
+# DURING GAME AREA ENTERING FUNCTIONS
+
 func _on_win_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		print("You win")
 
+
 func _on_water_area_body_entered(body: Node3D) -> void:
-	if body.is_in_group("player") or body.is_in_group("Blocks"):
+	if body.is_in_group("player") or body.is_in_group("Ship"):
 		body.enterWater()
-		contactList.append(body)
 		
 		var selfDir = self.rotation.y
 		if selfDir == 0:
@@ -119,10 +114,6 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 			body.direction = 2
 		elif is_equal_approx(selfDir, (PI / 2)):
 			body.direction = -2
-		
-		# Specific Water Areas
-		if self.is_in_group("hasPoison"):
-			body.enterPoison()
 		
 		if self.is_in_group("SpeedUp"):
 			if self.name == "FastArea":
@@ -136,22 +127,33 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 				body.direction = -1
 			elif (selfDir == 0) or (is_equal_approx(selfDir, PI)): # Entire area facing right, or forward turning right
 				body.direction = 1
+		
+		# layer specific events:
+		if !body.is_in_group("Ship"):
+			
+			# Specific Water Areas
+			if self.is_in_group("hasPoison"):
+				body.enterPoison()
+
 
 func _on_water_area_body_exited(body: Node3D) -> void:
-	if body.is_in_group("player") or body.is_in_group("Blocks"):
+	if body.is_in_group("player") or body.is_in_group("Ship"):
 		body.exitWater()
-		contactList.erase(body)
 		
 		# Specific Water Areas
-		if self.is_in_group("hasPoison"):
-			body.exitPoison()
 		
 		if self.is_in_group("SpeedUp"):
 			body.changeSpeed(true) # Inside does not matter
+		
+		if !body.is_in_group("Ship"):
+			if self.is_in_group("hasPoison"):
+				body.exitPoison()
+
 
 func _on_tide_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		$TideAnimation.play("Wave")
+
 
 func _on_tide_area_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player"):

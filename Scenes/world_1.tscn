@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://b20hckk2j0msd"]
+[gd_scene load_steps=19 format=3 uid="uid://b20hckk2j0msd"]
 
 [ext_resource type="Script" uid="uid://p8acpf3twv13" path="res://Scenes/world_1.gd" id="1_d4kua"]
 [ext_resource type="PackedScene" uid="uid://bkdsnx3e8kqsg" path="res://Scenes/player.tscn" id="2_brd3p"]
 [ext_resource type="Script" uid="uid://dnyykc0kbpqvm" path="res://Scripts/block_placement_zone.gd" id="3_ax6sa"]
+[ext_resource type="Script" uid="uid://deas84vsetq5e" path="res://Scripts/ship.gd" id="4_d4kua"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nsk3r"]
 sky_top_color = Color(0.19607843, 0.90588236, 1, 1)
@@ -131,6 +132,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ReplacementWater/WaterArea" groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_dksw6")
+
+[node name="Ship" type="RigidBody3D" parent="." groups=["Ship", "SpeedUp"]]
+axis_lock_angular_z = true
+inertia = Vector3(1, 1, 1)
+freeze = true
+linear_damp = 0.5
+angular_damp = 10.0
+script = ExtResource("4_d4kua")
 
 [connection signal="body_entered" from="ReplacementWater/WaterArea" to="." method="_on_water_area_body_entered"]
 [connection signal="body_exited" from="ReplacementWater/WaterArea" to="." method="_on_water_area_body_exited"]

@@ -1,6 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://xwfvj3sjejff"]
+[gd_scene load_steps=6 format=3 uid="uid://xwfvj3sjejff"]
 
 [ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_aodlk"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aodlk"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aodlk"]
 albedo_color = Color(1, 0.44646567, 0.95666283, 1)
@@ -8,11 +10,10 @@ albedo_color = Color(1, 0.44646567, 0.95666283, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_0i082"]
 material = SubResource("StandardMaterial3D_aodlk")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_vggnq"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_0i082"]
 
-[node name="InfinityBlock" type="RigidBody3D" groups=["Blocks"]]
-mass = 100.0
-freeze = true
+[node name="InfinityBlock" type="CollisionShape3D" groups=["Blocks"]]
+shape = SubResource("BoxShape3D_aodlk")
 script = ExtResource("1_aodlk")
 health = 1.0
 endurance = -1.0
@@ -21,5 +22,10 @@ luck = 101
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_0i082")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_vggnq")
+[node name="DamageArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
+shape = SubResource("BoxShape3D_0i082")
+
+[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]
+[connection signal="body_exited" from="DamageArea" to="." method="_on_damage_area_body_exited"]

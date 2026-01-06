@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgia11lbgjhq8"]
+
+[ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_wgqwl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wgqwl"]
+transparency = 1
+albedo_color = Color(0.9019608, 0.78039217, 0.49803922, 1)
+stencil_flags = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_4yl8j"]
+material = SubResource("StandardMaterial3D_wgqwl")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_x2y8m"]
+
+[node name="Block" type="Node3D" groups=["Blocks"]]
+script = ExtResource("1_wgqwl")
+health = 3.0
+endurance = null
+luck = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_4yl8j")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_x2y8m")
