@@ -6,6 +6,9 @@ extends RigidBody3D
 @onready var direction = 0
 @onready var waterFlowVel = 6
 @onready var waterFlowMax = 6
+@onready var incline = false
+@onready var inclineBoost = 1.5
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -34,11 +37,16 @@ func _physics_process(delta: float) -> void:
 				linear_velocity.z = -waterFlowMax
 			else:
 				linear_velocity.z = waterFlowMax
-	linear_velocity += get_gravity() * delta
 	
 	if on_floor():
 		linear_velocity.y = 0
-		
+	else:
+		linear_velocity += get_gravity() * delta
+	
+	if incline:
+		linear_velocity.y = inclineBoost
+	
+	print("ship linear velocity = ", linear_velocity)
 
 # Interact with water function
 func enterWater():
@@ -54,13 +62,16 @@ func exitWater():
 
 # Fast area functions
 func changeSpeed(area: bool): # True = fastArea, false = crazyArea
-	if waterFlowMax == 6:
-		if area:
+	if area:
+		if waterFlowMax == 30:
+			waterFlowMax = 6
+		else:
 			waterFlowMax = 30
+	else:
+		if waterFlowMax == 12.5:
+			waterFlowMax = 6
 		else:
 			waterFlowMax = 12.5
-	else:
-		waterFlowMax = 6
 
 func on_floor():
 	return abs(linear_velocity.y) < 0.1

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://vko0aenxeo3f"]
 
-[ext_resource type="Script" uid="uid://cymkfutmxcv15" path="res://Scenes/Water_Areas/Objects/evil_cannon.gd" id="1_wgvwu"]
+[ext_resource type="Script" uid="uid://cymkfutmxcv15" path="res://Scripts/evil_cannon.gd" id="1_wgvwu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wgvwu"]
 albedo_color = Color(0.33912084, 0.15514094, 0.076982595, 1)

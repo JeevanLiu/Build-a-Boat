@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cy0o2t3eyoaaw"]
 
-[ext_resource type="Script" uid="uid://2d46iuqjs4rm" path="res://Scenes/Water_Areas/Objects/cannon_projectile.gd" id="1_o7avw"]
+[ext_resource type="Script" uid="uid://2d46iuqjs4rm" path="res://Scripts/cannon_projectile.gd" id="1_o7avw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o7avw"]
 albedo_color = Color(0, 0, 0, 1)

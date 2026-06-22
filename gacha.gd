@@ -35,6 +35,7 @@ func _on_shop_pressed() -> void:
 	openChanges()
 
 func _on_gacha_button_pressed() -> void:
-	var blockIndex = randi_range(0, bpz.blocks.size() - 1)
-	var numAdded = randi_range(10, 20)
-	player.blockCountList[blockIndex] += numAdded
+	if player.adjMoney(false, 100):
+		var blockIndex = randi_range(0, bpz.blocks.size() - 1)
+		var numAdded = randi_range(10, 20)
+		player.blockCountList[blockIndex] += numAdded

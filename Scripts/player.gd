@@ -11,9 +11,12 @@ extends CharacterBody3D
 @onready var direction = 0
 @onready var waterSpeed = 1
 
+# Player specific count variables
 @onready var blockCountList = [55, 55, 55, 55, 55, 55, 55, 55]
-# Decrement during placement, read off of a file or something, add when gachad/bought
-# But yeah base is 1 for now, 0 later
+# Decrement during placement, read off of a file or something, OR DATABASE, add when gachad/bought
+# But yeah base is 55 for now, 0 later
+@onready var money = 1000
+# LATER - Start with 100 or so, enough for baby gacha, then yeh
 
 # UI Variables
 @onready var blocks = []
@@ -82,7 +85,7 @@ func _input(event):
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
-		velocity += get_gravity() * delta
+		velocity += get_gravity() * delta * 2
 	
 	# From Jus:
 	# Get the input direcdtion and handle the movement/deceleration.
@@ -132,6 +135,9 @@ func _physics_process(delta: float) -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
+	# Updates Player Display
+	updateMoney()
+	
 	for block in bpz.blocks:
 		var path = block.resource_path
 		var name = path.get_file().get_basename()
@@ -156,7 +162,22 @@ func _process(delta: float) -> void:
 
 
 
-# General Functions
+# General and Display Functions
+
+# Updates Money Display
+func updateMoney():
+	$"Current Money".text = "$" + str(money)
+# Updates Money
+func adjMoney(operation: bool, change: int): # True = Add, False = Subtract
+	if operation:
+		self.money += change
+	else:
+		if self.money >= change:
+			self.money -= change
+		else:
+			return false
+	updateMoney()
+	return true
 
 # Interact with water function
 func enterWater():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bkdsnx3e8kqsg"]
+[gd_scene format=3 uid="uid://bkdsnx3e8kqsg"]
 
 [ext_resource type="Script" uid="uid://bg2lnhwfrjje8" path="res://Scripts/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://b77et8g4b8k33" path="res://Scenes/gacha.tscn" id="2_cvnsp"]
@@ -22,50 +22,50 @@ rings = 5
 [sub_resource type="Theme" id="Theme_v0iea"]
 Button/colors/font_color = Color(0.003921569, 0, 0, 1)
 
-[node name="Player" type="CharacterBody3D" groups=["player"]]
+[node name="Player" type="CharacterBody3D" unique_id=1803403783 groups=["player"]]
 script = ExtResource("1_v0iea")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1945452091]
 mesh = SubResource("CapsuleMesh_vigqh")
 surface_material_override/0 = SubResource("StandardMaterial3D_e5alk")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1563120058]
 shape = SubResource("CapsuleShape3D_mqyi5")
 
-[node name="Camera" type="Node3D" parent="."]
+[node name="Camera" type="Node3D" parent="." unique_id=1778756242]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="SpringArm3D" type="SpringArm3D" parent="Camera"]
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera" unique_id=774218929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
 collision_mask = 16
 shape = SubResource("SphereShape3D_nsk3r")
 spring_length = 2.0
 
-[node name="Camera3D" type="Camera3D" parent="Camera/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="Camera/SpringArm3D" unique_id=1906669878]
 transform = Transform3D(1, 0, 0, 0, 0.9699231, 0.24341181, 0, -0.24341181, 0.9699231, 0, 0, 0)
 
-[node name="RayCast3D" type="RayCast3D" parent="Camera/SpringArm3D/Camera3D"]
+[node name="RayCast3D" type="RayCast3D" parent="Camera/SpringArm3D/Camera3D" unique_id=445157494]
 
-[node name="Preview" type="MeshInstance3D" parent="Camera/SpringArm3D/Camera3D/RayCast3D"]
+[node name="Preview" type="MeshInstance3D" parent="Camera/SpringArm3D/Camera3D/RayCast3D" unique_id=841402393]
 transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("SphereMesh_v0iea")
 skeleton = NodePath("../..")
 
-[node name="Current Block" type="Label" parent="."]
+[node name="Current Block" type="Label" parent="." unique_id=1765029024]
 offset_left = 29.0
 offset_top = 282.0
 offset_right = 69.0
 offset_bottom = 305.0
 text = "N/A"
 
-[node name="Current Money" type="Label" parent="."]
+[node name="Current Money" type="Label" parent="." unique_id=279545951]
 offset_left = 24.0
 offset_top = 17.0
 offset_right = 64.0
 offset_bottom = 40.0
 text = "N/A"
 
-[node name="LaunchButton" type="Button" parent="."]
+[node name="LaunchButton" type="Button" parent="." unique_id=927665902]
 offset_left = 1059.0
 offset_top = 298.0
 offset_right = 1132.0
@@ -73,6 +73,6 @@ offset_bottom = 354.0
 theme = SubResource("Theme_v0iea")
 text = " Launch "
 
-[node name="Gacha" parent="." instance=ExtResource("2_cvnsp")]
+[node name="Gacha" parent="." unique_id=264201573 instance=ExtResource("2_cvnsp")]
 
 [connection signal="pressed" from="LaunchButton" to="." method="_on_launch_button_pressed"]

@@ -1,5 +1,8 @@
 extends Node3D
 
+@onready var world = $".."
+@onready var player = $"../Player"
+
 # Types of rocks
 @onready var bigRock = preload("res://Scenes/Water_Areas/Objects/big_rock.tscn")
 @onready var lilRock = preload("res://Scenes/Water_Areas/Objects/lil_rock.tscn")
@@ -101,6 +104,10 @@ func loadBallistas(l: int, w: int):
 func _on_win_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		print("You win")
+		player.adjMoney(true, 100 + int(world.numAreas * 1.2))
+		player.position = Vector3(-20, 11, 0)
+		world.unlaunch()
+		$"../Player/LaunchButton".show()
 
 
 func _on_water_area_body_entered(body: Node3D) -> void:
@@ -115,11 +122,22 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 		elif is_equal_approx(selfDir, (PI / 2)):
 			body.direction = -2
 		
+		if self.is_in_group("Incline"):
+			if body.is_in_group("Ship"):
+				body.incline = true
+				body.waterFlowMax = 10 # Shhhhhhh
+		
 		if self.is_in_group("SpeedUp"):
-			if self.name == "FastArea":
-				body.changeSpeed(true)
+			if body.is_in_group("player"):
+				if self.name == "FastArea":
+					body.changeSpeed(true)
+				else:
+					body.changeSpeed(false)
 			else:
-				body.changeSpeed(false)
+				if self.name == "FastArea":
+					body.waterFlowMax += 30
+				else:
+					body.waterFlowMax += 10
 		
 		# Corner turning
 		if self.is_in_group("Corner"):
@@ -142,8 +160,25 @@ func _on_water_area_body_exited(body: Node3D) -> void:
 		
 		# Specific Water Areas
 		
+		if self.is_in_group("Incline"):
+			if body.is_in_group("Ship"):
+				body.incline = false
+				if body.waterFlowMax == 10:
+					body.waterFlowMax = 6 # Shhhhhhh
+		
 		if self.is_in_group("SpeedUp"):
-			body.changeSpeed(true) # Inside does not matter
+			if body.is_in_group("player"):
+				if self.name == "FastArea":
+					body.changeSpeed(true)
+				else:
+					body.changeSpeed(false)
+			else:
+				if body.waterFlowMax > 15:
+					if self.name == "FastArea":
+						body.waterFlowMax -= 30
+					else:
+						body.waterFlowMax -= 10
+					
 		
 		if !body.is_in_group("Ship"):
 			if self.is_in_group("hasPoison"):
@@ -151,7 +186,7 @@ func _on_water_area_body_exited(body: Node3D) -> void:
 
 
 func _on_tide_area_body_entered(body: Node3D) -> void:
-	if body.is_in_group("player"):
+	if body.is_in_group("player") and Globals.launched:
 		$TideAnimation.play("Wave")
 
 

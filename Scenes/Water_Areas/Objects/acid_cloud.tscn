@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://c8cxiflmxuojs"]
 
-[ext_resource type="Script" uid="uid://bx0m2m6rfidwa" path="res://Scenes/Water_Areas/Objects/rain.gd" id="1_jmaw2"]
+[ext_resource type="Script" uid="uid://bx0m2m6rfidwa" path="res://Scripts/rain.gd" id="1_jmaw2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8m5tk"]
 albedo_color = Color(0.32421654, 0.32514498, 0.21982118, 1)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bkow8nvco7qlm"]
 
-[ext_resource type="Script" uid="uid://cqol7rrfx6gpw" path="res://Scenes/Water_Areas/rock_area.gd" id="1_unua7"]
+[ext_resource type="Script" uid="uid://cqol7rrfx6gpw" path="res://Scripts/rock_area.gd" id="1_unua7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_d74md"]
 size = Vector3(5, 10, 5)
