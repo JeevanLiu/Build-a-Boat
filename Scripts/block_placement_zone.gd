@@ -7,12 +7,13 @@ extends Node3D
 @onready var obsidian = preload("res://Scenes/Blocks/obsidian.tscn")
 @onready var chair = preload("res://Scenes/Blocks/basic_chair.tscn")
 @onready var woodBlock = preload("res://Scenes/Blocks/wood_block.tscn")
+@onready var tnt = preload("res://Scenes/Blocks/tnt_block.tscn")
 
 # Dev Block (maybe fun gamemode later)
 @onready var infinityBlock = preload("res://Scenes/Blocks/infinity_block.tscn")
 @onready var infinityChair = preload("res://Scenes/Blocks/infinity_chair.tscn")
 
-@onready var blocks = [block, stoneBlock, luckyBlock, obsidian, chair, woodBlock, infinityBlock, infinityChair]
+@onready var blocks = [block, stoneBlock, luckyBlock, obsidian, chair, woodBlock, tnt, infinityBlock, infinityChair]
 @onready var blockIndex = 0
 @onready var test_blocc = blocks[blockIndex]
 

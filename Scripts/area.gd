@@ -117,15 +117,16 @@ func _on_win_area_body_entered(body: Node3D) -> void:
 
 func _on_water_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player") or body.is_in_group("Ship"):
+		print("Touching water")
 		body.enterWater()
 		
 		var selfDir = self.rotation.y
 		if selfDir == 0:
-			body.direction = 0
+			body.turn(0)
 		elif is_equal_approx(selfDir, - (PI / 2)):
-			body.direction = 2
+			body.turn(2)
 		elif is_equal_approx(selfDir, (PI / 2)):
-			body.direction = -2
+			body.turn(-2)
 		
 		if self.is_in_group("Incline"):
 			if body.is_in_group("Ship"):
@@ -146,9 +147,9 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 		# Corner turning
 		if self.is_in_group("Corner"):
 			if (is_equal_approx(selfDir, (PI / 2))) or (is_equal_approx(selfDir, - (PI / 2))):  # Entire area facing left, or forward turning left
-				body.direction = -1
+				body.turn(-1)
 			elif (selfDir == 0) or (is_equal_approx(selfDir, PI)): # Entire area facing right, or forward turning right
-				body.direction = 1
+				body.turn(1)
 		
 		# layer specific events:
 		if !body.is_in_group("Ship"):

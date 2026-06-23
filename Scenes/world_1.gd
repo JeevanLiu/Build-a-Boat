@@ -22,7 +22,7 @@ var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 #@onready var possibleAreas = [evilCannonAreaScene]
 
 
-@onready var numAreas = 10 # Change to make more areas spawn
+@onready var numAreas = 5 # Change to make more areas spawn
 @onready var areaList = [] # List of procedurally generated areas
 @onready var totalSpaceX = 0 # Displacement between areas on the X
 @onready var totalSpaceY = 0 # Displacement between areas on the Y
@@ -151,6 +151,7 @@ func launch():
 	# Unfreezes blocks when the water shows up
 	await get_tree().create_timer(0.5).timeout
 	ship.freeze = false
+	ship.turn(0)
 
 func unlaunch():
 	Globals.launched = false

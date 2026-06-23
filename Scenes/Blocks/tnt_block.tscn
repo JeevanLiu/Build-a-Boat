@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cv6ax6rpu6c1y"]
+
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_diedf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_diedf"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 1)
+stencil_flags = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_qoyv5"]
+material = SubResource("StandardMaterial3D_diedf")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_diedf"]
+radius = 3.0
+
+[node name="TNTBlock" unique_id=1021266519 groups=["Explodes"] instance=ExtResource("1_diedf")]
+health = 1.0
+luck = 0
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_qoyv5")
+
+[node name="BlastRadius" type="Area3D" parent="." index="2" unique_id=464313454]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BlastRadius" index="0" unique_id=854206864]
+shape = SubResource("SphereShape3D_diedf")

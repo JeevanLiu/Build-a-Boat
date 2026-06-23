@@ -12,7 +12,7 @@ extends CharacterBody3D
 @onready var waterSpeed = 1
 
 # Player specific count variables
-@onready var blockCountList = [55, 55, 55, 55, 55, 55, 55, 55]
+@onready var blockCountList = [55, 55, 55, 55, 55, 55, 55, 55, 55]
 # Decrement during placement, read off of a file or something, OR DATABASE, add when gachad/bought
 # But yeah base is 55 for now, 0 later
 @onready var money = 1000
@@ -79,12 +79,13 @@ func _input(event):
 			placeBlock.emit(vec_pos, "")
 			
 	# Scrolls the block
-	if (event is InputEventMouseButton):
-		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
-			scrollBlock.emit(true)
+	if event.is_action_pressed("menu_left"): # Left first to handle shift + tab vs tab
+		scrollBlock.emit(false)
+		scrollBlock.emit(false)
+	elif event.is_action_pressed("menu_right"):
+		scrollBlock.emit(true)
+		scrollBlock.emit(true)
 
-		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
-			scrollBlock.emit(false)
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -105,8 +106,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Water touching logic
 	if is_on_floor() and inWater:
-		health -= 0.25
-		updateHealth()
+		damage(0.25)
 		
 		if direction == 0: # Forward
 			self.position.x += 0.1 * waterSpeed
@@ -195,18 +195,24 @@ func updateHealth():
 	if health <= 0:
 		die()
 
+func damage(amount):
+	health -= amount
+	updateHealth()
+
 func die():
 	print("Dead") # Do something later
 
 # Interact with water function
 func enterWater():
-	health -= 5 # Chunk of damage when first touching water
+	damage(5) # Chunk of damage when first touching water
 	touchWater += 1
 	inWater = true
 func exitWater():
 	touchWater -= 1
 	if touchWater <= 0:
 		inWater = false
+func turn(newDir):
+	direction = newDir
 
 # Hitting a damaging object function
 func hitObject():

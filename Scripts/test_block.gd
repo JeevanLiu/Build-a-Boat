@@ -9,6 +9,7 @@ extends CollisionShape3D
 
 # Parent
 @onready var ship = $".."
+@onready var player = $"../../Player"
 
 @onready var damageTouching = []
 @onready var inWater = false
@@ -20,7 +21,6 @@ extends CollisionShape3D
 
 # Chair/Sitting
 @onready var sitting = false
-@onready var player = null
 
 # preview mode for before placing
 var previewMode = false
@@ -39,11 +39,6 @@ func _ready() -> void:
 		mat.albedo_color.a = 0.5
 		mat.next_pass = ShaderMaterial.new()
 		mat.next_pass.shader = load("res://Scripts/Shaders/hologram.gdshader")'''
-	
-	# Connecting Chair Functions
-	if self.is_in_group("Sittable"):
-		$ChairArea.body_entered.connect(_on_body_entered)
-		$ChairArea.body_exited.connect(_on_body_exited)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,10 +49,10 @@ func _physics_process(delta: float) -> void:
 	# Block damage logic
 	if damageTouching:
 		for body in damageTouching:
-			body.damage()
+			body.damage(1)
 			# Luck logic:
 			if randf_range(0, 100) > luck:
-				health -= (1.0 / endurance)
+				damage(1.0 / endurance)
 				print("Damage taken, new health = ", health)
 			else:
 				print("Lucky break")
@@ -68,17 +63,17 @@ func _physics_process(delta: float) -> void:
 			poisonTick()
 	
 	# Handles sitting related events
-	if player and Input.is_action_just_pressed("right_click"):
+	if abs(player.global_position - self.global_position) < Vector3(3, 3, 3) and Input.is_action_just_pressed("right_click"):
 		# Calls sitting when near chairs
 		if self.is_in_group("Sittable"):
 			sit()
 	
-	elif player and Input.is_action_just_pressed("ui_accept"):
+	elif Input.is_action_just_pressed("ui_accept"):
 		sitting = false
 	
 	# Handles Chair events
 	if self.is_in_group("Sittable"):
-		if sitting and player:
+		if sitting:
 			player.rotation = self.rotation
 			
 			var normOffset = Vector3(0, 2, 0)
@@ -97,6 +92,8 @@ func acidHit():
 
 func dies():
 	if health <= 0:
+		if self.is_in_group("Explodes"):
+			explode()
 		queue_free()
 
 # Poison functions REWORK POISON I GOT RID OF THE THING THAT MAKES IT WORK EARLIER
@@ -115,11 +112,6 @@ func evilCannonHit():
 
 # Block Specific Functions
 
-func _on_body_entered(body):
-	# Function determining if the player is nearby (body has a large radius around the block)
-	if body.is_in_group("player"):
-		player = body
-
 func _on_body_exited(body):
 	# 
 	if body == player:
@@ -137,6 +129,23 @@ func sit():
 		player.set_collision_layer_value(1, true)
 		player.set_collision_layer_value(2, false)
 
+# Explosion Function
+func explode():
+	var bodies = $BlastRadius.get_overlapping_bodies()
+	for sibling in ship.get_children():
+		if abs(sibling.position - self.position) < Vector3(3, 3, 3):
+			sibling.damage(2)
+	if abs(player.global_position - self.global_position) < Vector3(3, 3, 3):
+		player.damage(15)
+	for body in bodies:
+		if body.is_in_group("Rocks"):
+			body.damage(5)
+	var epic = self.global_position - ship.global_position
+	var epic2 = epic.normalized()
+	var epic3 = Vector3(tanh(epic2.x), tanh(epic2.y), tanh(epic2.z))
+	ship.apply_impulse(epic3, self.global_position)
+	print("Applied " + str(epic3) + " in the direction" + str(epic))
+
 # Damage function
 func _on_damage_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("Rocks"):
@@ -145,3 +154,6 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 func _on_damage_area_body_exited(body: Node3D) -> void:
 	if body.is_in_group("Rocks"):
 		damageTouching.erase(body)
+
+func damage(amount):
+	health -= amount

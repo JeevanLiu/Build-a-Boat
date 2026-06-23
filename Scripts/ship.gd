@@ -7,7 +7,7 @@ extends RigidBody3D
 @onready var waterFlowVel = 6
 @onready var waterFlowMax = 6
 @onready var incline = false
-@onready var inclineBoost = Vector3(0, 0.5, 0)
+@onready var inclineBoost = Vector3(0, 1, 0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,26 +16,15 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	
+	# Updates mass and inertia dynamically
+	var childCount = get_child_count()
+	var childLog = log(childCount)
+	if childLog > 1:
+		mass = childLog
+		inertia = Vector3(childLog, childLog, childLog)
+	
 	# Water touching logic
 	if Globals.launched and inWater:
-		apply_central_impulse(Vector3(0, 100, 0))
-		if direction == 0: # Forward
-			#linear_velocity.x += waterFlowVel
-			apply_central_force(Vector3(100, 0, 0))
-		elif direction == -2: # Left
-			#linear_velocity.z -= waterFlowVel
-			apply_central_force(Vector3(0, 0, -100))
-		elif direction == 2: # Right
-			#linear_velocity.z += waterFlowVel
-			apply_central_force(Vector3(0, 0, 100))
-		elif direction == -1: # Diagonally Left
-			#linear_velocity.x += waterFlowVel
-			#linear_velocity.z -= waterFlowVel
-			apply_central_force(Vector3(75, 0, -75))
-		elif direction == 1: # Diagonally Right
-			#linear_velocity.x += waterFlowVel
-			#linear_velocity.z += waterFlowVel
-			apply_central_force(Vector3(75, 0, 75))
 		if linear_velocity.x > waterFlowMax:
 			linear_velocity.x = waterFlowMax
 		if abs(linear_velocity.z) > waterFlowMax:
@@ -66,6 +55,7 @@ func exitWater():
 	if touchWater <= 0:
 		inWater = false
 		print("EXITING WATER COMPLETELY")
+		set_constant_force(Vector3.ZERO)
 
 # Fast area functions
 func changeSpeed(area: bool): # True = fastArea, false = crazyArea
@@ -82,3 +72,21 @@ func changeSpeed(area: bool): # True = fastArea, false = crazyArea
 
 func on_floor():
 	return abs(linear_velocity.y) < 0.1
+
+# Movement adjustment
+func move():
+	var massAssist = max(1, mass / 2)
+	if direction == 0: # Forward
+		set_constant_force(massAssist * Vector3(100, 0, 0))
+	elif direction == -2: # Left
+		set_constant_force(massAssist * Vector3(0, 0, -100))
+	elif direction == 2: # Right
+		set_constant_force(massAssist * Vector3(0, 0, 100))
+	elif direction == -1: # Diagonally Left
+		set_constant_force(massAssist * Vector3(75, 0, -75))
+	elif direction == 1: # Diagonally Right
+		set_constant_force(massAssist * Vector3(75, 0, 75))
+
+func turn(newDir):
+	direction = newDir
+	move()
