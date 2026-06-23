@@ -1,32 +1,18 @@
 [gd_scene format=3 uid="uid://cji0fjmnsc46y"]
 
-[ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_0e10m"]
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_lva47"]
 [ext_resource type="Texture2D" uid="uid://bwyj1gvt3r4xr" path="res://Scenes/Blocks/Textures/Question Marks.png" id="2_lva47"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_lva47"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwg1m"]
-albedo_color = Color(3.7541986e-06, 0.7492293, 0.29367465, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_euxkg"]
+albedo_color = Color(0, 0.7490196, 0.29411766, 1)
 albedo_texture = ExtResource("2_lva47")
 
-[sub_resource type="BoxMesh" id="BoxMesh_2c32c"]
-material = SubResource("StandardMaterial3D_uwg1m")
+[sub_resource type="BoxMesh" id="BoxMesh_3s0ih"]
+material = SubResource("StandardMaterial3D_euxkg")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_euxkg"]
-
-[node name="lucky_block" type="CollisionShape3D" unique_id=984830989 groups=["Blocks"]]
-shape = SubResource("BoxShape3D_lva47")
-script = ExtResource("1_0e10m")
+[node name="LuckyBlock" unique_id=1021266519 instance=ExtResource("1_lva47")]
 health = 1.0
 luck = 90
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=967050380]
-mesh = SubResource("BoxMesh_2c32c")
-
-[node name="DamageArea" type="Area3D" parent="." unique_id=1674953423]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea" unique_id=530676116]
-shape = SubResource("BoxShape3D_euxkg")
-
-[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]
-[connection signal="body_exited" from="DamageArea" to="." method="_on_damage_area_body_exited"]
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_3s0ih")

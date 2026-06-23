@@ -163,6 +163,9 @@ func _process(delta: float) -> void:
 	else:
 		$LaunchButton.hide()
 		cblockDis.text = ""
+		
+	if poisoned:
+		poisonTick()
 
 
 
@@ -225,8 +228,8 @@ func enterPoison():
 	poisoned = true
 func exitPoison():
 	poisoned = false
-func poisonTick(): # CURRENTLY EMPTY
-	health *= 0.99
+func poisonTick():
+	health *= 0.9975
 	updateHealth()
 
 # Fast area functions

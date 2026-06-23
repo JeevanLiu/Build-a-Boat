@@ -7,6 +7,9 @@ extends CollisionShape3D
 @export var endurance = 1.0
 @export var luck = 1
 
+# Other stats
+@export var acidEndurance = 1.0
+
 # Parent
 @onready var ship = $".."
 @onready var player = $"../../Player"
@@ -47,19 +50,12 @@ func _physics_process(delta: float) -> void:
 	dies()
 	
 	# Block damage logic
-	if damageTouching:
-		for body in damageTouching:
-			body.damage(1)
-			# Luck logic:
-			if randf_range(0, 100) > luck:
-				damage(1.0 / endurance)
-				print("Damage taken, new health = ", health)
-			else:
-				print("Lucky break")
-	
-	# Poison logic
-	if int(delta) % 60 == 0:
-		if poisoned:
+	var touching = $DamageArea.get_overlapping_bodies()
+	for obj in touching:
+		if obj.is_in_group("Rocks"):
+			obj.damage(1)
+			self.damage(1)
+		elif obj.is_in_group("hasPoison"):
 			poisonTick()
 	
 	# Handles sitting related events
@@ -87,7 +83,7 @@ func _physics_process(delta: float) -> void:
 func acidHit():
 	if randf_range(0, 100) > luck:
 		print("Acid hit! health before = ", health)
-		health -= 1
+		damage(2 / acidEndurance)
 		print("Acid hit! health after = ", health)
 
 func dies():
@@ -103,12 +99,9 @@ func exitPoison():
 	poisoned = false
 func poisonTick():
 	if randf_range(0, 100) > luck:
-			health /= 1.0025
-			print("Poisoned, new health = ", health)
+			health *= (1 - (0.0025 / acidEndurance))
 func evilCannonHit():
-	if randf_range(0, 100) > luck:
-		health -= (4.0 / endurance)
-		print("evil cannon hit!", health)
+	damage(4)
 
 # Block Specific Functions
 
@@ -131,6 +124,7 @@ func sit():
 
 # Explosion Function
 func explode():
+	# Damage
 	var bodies = $BlastRadius.get_overlapping_bodies()
 	for sibling in ship.get_children():
 		if abs(sibling.position - self.position) < Vector3(3, 3, 3):
@@ -140,20 +134,18 @@ func explode():
 	for body in bodies:
 		if body.is_in_group("Rocks"):
 			body.damage(5)
+	
+	# Impulse effect
 	var epic = self.global_position - ship.global_position
 	var epic2 = epic.normalized()
 	var epic3 = Vector3(tanh(epic2.x), tanh(epic2.y), tanh(epic2.z))
 	ship.apply_impulse(epic3, self.global_position)
 	print("Applied " + str(epic3) + " in the direction" + str(epic))
 
-# Damage function
-func _on_damage_area_body_entered(body: Node3D) -> void:
-	if body.is_in_group("Rocks"):
-		damageTouching.append(body)
-
-func _on_damage_area_body_exited(body: Node3D) -> void:
-	if body.is_in_group("Rocks"):
-		damageTouching.erase(body)
-
 func damage(amount):
-	health -= amount
+	# Luck logic:
+	if randf_range(0, 100) > luck:
+		health -= (amount / endurance)
+		print("Damage taken, new health = ", health)
+	else:
+		print("Lucky break")

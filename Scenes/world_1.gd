@@ -16,10 +16,10 @@ var crazyAreaScene = preload("res://Scenes/Water_Areas/crazy_area.tscn") # add m
 var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 
 # Functions for calling each scene
-@onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene, crazyAreaScene]
+#@onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene, crazyAreaScene]
 
 # Smaller one used for testing specific areas
-#@onready var possibleAreas = [evilCannonAreaScene]
+@onready var possibleAreas = [poisonAreaScene]
 
 
 @onready var numAreas = 5 # Change to make more areas spawn

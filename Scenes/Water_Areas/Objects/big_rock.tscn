@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkow8nvco7qlm"]
+[gd_scene format=3 uid="uid://bkow8nvco7qlm"]
 
 [ext_resource type="Script" uid="uid://cqol7rrfx6gpw" path="res://Scripts/rock_area.gd" id="1_unua7"]
 
@@ -12,16 +12,17 @@ albedo_color = Color(0.12633577, 0.12796718, 0.1361576, 1)
 material = SubResource("StandardMaterial3D_grpf8")
 size = Vector3(5, 10, 5)
 
-[node name="BigRock" type="StaticBody3D" groups=["Rocks"]]
+[node name="BigRock" type="StaticBody3D" unique_id=1101510771 groups=["Rocks"]]
 transform = Transform3D(1, 0, 0, 0, 0.5729186, 0.81961226, 0, -0.81961226, 0.5729186, 0, 0, 0)
 collision_layer = 3
 collision_mask = 3
 script = ExtResource("1_unua7")
+health = 5.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1402421863]
 shape = SubResource("BoxShape3D_d74md")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1983943615]
 mesh = SubResource("BoxMesh_onb0f")
 
-[node name="DamageTimer" type="Timer" parent="."]
+[node name="DamageTimer" type="Timer" parent="." unique_id=830356900]

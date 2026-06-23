@@ -1,28 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://braxifh10rk2w"]
+[gd_scene format=3 uid="uid://braxifh10rk2w"]
 
-[ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_h6uup"]
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_h6uup"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_h6uup"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g5fvj"]
+transparency = 1
+albedo_color = Color(0.26666668, 0.26666668, 0.26666668, 1)
+stencil_flags = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h6uup"]
-albedo_color = Color(0.26657522, 0.2665752, 0.2665752, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_7lsil"]
+material = SubResource("StandardMaterial3D_g5fvj")
 
-[sub_resource type="BoxMesh" id="BoxMesh_g5fvj"]
-material = SubResource("StandardMaterial3D_h6uup")
+[node name="StoneBlock" unique_id=1021266519 instance=ExtResource("1_h6uup")]
+health = 5.0
+endurance = 1.5
+acidEndurance = 4.0
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_g5fvj"]
-
-[node name="stone_block" type="CollisionShape3D" groups=["Blocks"]]
-shape = SubResource("BoxShape3D_h6uup")
-script = ExtResource("1_h6uup")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_g5fvj")
-
-[node name="DamageArea" type="Area3D" parent="."]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
-shape = SubResource("BoxShape3D_g5fvj")
-
-[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]
-[connection signal="body_exited" from="DamageArea" to="." method="_on_damage_area_body_exited"]
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_7lsil")

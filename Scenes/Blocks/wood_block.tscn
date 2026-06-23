@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://yia80i6akh7g"]
+[gd_scene format=3 uid="uid://yia80i6akh7g"]
 
 [ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_7fs7w"]
 
@@ -10,10 +10,11 @@ stencil_flags = 2
 [sub_resource type="BoxMesh" id="BoxMesh_u7hcm"]
 material = SubResource("StandardMaterial3D_7fs7w")
 
-[node name="WoodBlock" instance=ExtResource("1_7fs7w")]
+[node name="WoodBlock" unique_id=1372670183 instance=ExtResource("1_7fs7w")]
 health = 10.0
 endurance = 0.5
 luck = 5
+acidEndurance = 0.25
 
-[node name="MeshInstance3D" parent="." index="0"]
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
 mesh = SubResource("BoxMesh_u7hcm")

@@ -13,6 +13,7 @@ stencil_flags = 2
 material = SubResource("StandardMaterial3D_wgqwl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4yl8j"]
+size = Vector3(1.05, 1.05, 1.05)
 
 [node name="Block" type="CollisionShape3D" unique_id=1021266519 groups=["Blocks"]]
 shape = SubResource("BoxShape3D_wgqwl")

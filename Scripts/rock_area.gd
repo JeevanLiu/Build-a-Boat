@@ -1,6 +1,6 @@
 extends StaticBody3D
 
-@export var health = 2
+@export var health = 2.0
 
 func _process(delta: float) -> void:
 	if health <= 0:
