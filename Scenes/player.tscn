@@ -51,20 +51,6 @@ transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("SphereMesh_v0iea")
 skeleton = NodePath("../..")
 
-[node name="Current Block" type="Label" parent="." unique_id=1765029024]
-offset_left = 29.0
-offset_top = 282.0
-offset_right = 69.0
-offset_bottom = 305.0
-text = "N/A"
-
-[node name="Current Money" type="Label" parent="." unique_id=279545951]
-offset_left = 24.0
-offset_top = 17.0
-offset_right = 64.0
-offset_bottom = 40.0
-text = "N/A"
-
 [node name="LaunchButton" type="Button" parent="." unique_id=927665902]
 offset_left = 1059.0
 offset_top = 298.0
@@ -74,5 +60,28 @@ theme = SubResource("Theme_v0iea")
 text = " Launch "
 
 [node name="Gacha" parent="." unique_id=264201573 instance=ExtResource("2_cvnsp")]
+
+[node name="StatDisplay" type="Node2D" parent="." unique_id=791592127]
+
+[node name="Current Block" type="Label" parent="StatDisplay" unique_id=1765029024]
+offset_left = 29.0
+offset_top = 282.0
+offset_right = 69.0
+offset_bottom = 305.0
+text = "N/A"
+
+[node name="Current Money" type="Label" parent="StatDisplay" unique_id=279545951]
+offset_left = 24.0
+offset_top = 17.0
+offset_right = 64.0
+offset_bottom = 40.0
+text = "N/A"
+
+[node name="Current Health" type="Label" parent="StatDisplay" unique_id=1970978611]
+offset_left = 1050.0
+offset_top = 17.0
+offset_right = 1090.0
+offset_bottom = 40.0
+text = "N/A"
 
 [connection signal="pressed" from="LaunchButton" to="." method="_on_launch_button_pressed"]

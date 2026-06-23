@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://dgia11lbgjhq8"]
+[gd_scene format=3 uid="uid://dgia11lbgjhq8"]
 
 [ext_resource type="Script" uid="uid://bev1xwe6wx8vg" path="res://Scripts/test_block.gd" id="1_wgqwl"]
 
@@ -14,17 +14,17 @@ material = SubResource("StandardMaterial3D_wgqwl")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4yl8j"]
 
-[node name="Block" type="CollisionShape3D" groups=["Blocks"]]
+[node name="Block" type="CollisionShape3D" unique_id=1021266519 groups=["Blocks"]]
 shape = SubResource("BoxShape3D_wgqwl")
 script = ExtResource("1_wgqwl")
 health = 3.0
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=42661347]
 mesh = SubResource("BoxMesh_4yl8j")
 
-[node name="DamageArea" type="Area3D" parent="."]
+[node name="DamageArea" type="Area3D" parent="." unique_id=2052375136]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea" unique_id=1921964678]
 shape = SubResource("BoxShape3D_4yl8j")
 
 [connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]

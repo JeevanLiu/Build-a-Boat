@@ -1,11 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://b77et8g4b8k33"]
+[gd_scene format=3 uid="uid://b77et8g4b8k33"]
 
 [ext_resource type="Script" uid="uid://cciydwndmjjhf" path="res://gacha.gd" id="1_ughmx"]
 
-[node name="Gacha" type="Node2D"]
+[node name="Gacha" type="Node2D" unique_id=982792427]
 script = ExtResource("1_ughmx")
 
-[node name="Shop" type="Button" parent="."]
+[node name="Shop" type="Button" parent="." unique_id=1510858919]
 offset_left = 15.0
 offset_top = 600.0
 offset_right = 79.0
@@ -13,7 +13,7 @@ offset_bottom = 631.0
 text = "  Shop  "
 metadata/_edit_use_anchors_ = true
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1917712897]
 visible = false
 offset_left = 80.0
 offset_top = 80.0
@@ -21,16 +21,7 @@ offset_right = 1080.0
 offset_bottom = 580.0
 color = Color(0.8627451, 0.5058824, 0.30980393, 0.5764706)
 
-[node name="Gacha Button" type="Button" parent="."]
-visible = false
-offset_left = 555.0
-offset_top = 360.0
-offset_right = 628.0
-offset_bottom = 410.0
-text = "  Gacha  "
-metadata/_edit_use_anchors_ = true
-
-[node name="ExitShop" type="Button" parent="."]
+[node name="ExitShop" type="Button" parent="." unique_id=819683048]
 visible = false
 offset_left = 1012.0
 offset_top = 87.0
@@ -39,6 +30,38 @@ offset_bottom = 118.0
 text = " Close  "
 metadata/_edit_use_anchors_ = true
 
+[node name="Winnings" type="Label" parent="." unique_id=1614028914]
+visible = false
+offset_left = 509.0
+offset_top = 456.0
+offset_right = 638.0
+offset_bottom = 479.0
+text = "NULL WINNINGS"
+
+[node name="Timer" type="Timer" parent="Winnings" unique_id=1100362829]
+wait_time = 2.0
+
+[node name="Gacha Types" type="Node2D" parent="." unique_id=648152171]
+
+[node name="Common" type="Button" parent="Gacha Types" unique_id=355183248]
+visible = false
+offset_left = 311.0
+offset_top = 392.0
+offset_right = 459.0
+offset_bottom = 442.0
+text = "  Common Gacha  "
+metadata/_edit_use_anchors_ = true
+
+[node name="Rare" type="Button" parent="Gacha Types" unique_id=1620597748]
+visible = false
+offset_left = 628.0
+offset_top = 315.0
+offset_right = 741.0
+offset_bottom = 365.0
+text = "  Rare Gacha  "
+metadata/_edit_use_anchors_ = true
+
 [connection signal="pressed" from="Shop" to="." method="_on_shop_pressed"]
-[connection signal="pressed" from="Gacha Button" to="." method="_on_gacha_button_pressed"]
 [connection signal="pressed" from="ExitShop" to="." method="_on_exit_shop_pressed"]
+[connection signal="pressed" from="Gacha Types/Common" to="." method="_on_gacha_button_pressed"]
+[connection signal="pressed" from="Gacha Types/Rare" to="." method="_on_rare_pressed"]

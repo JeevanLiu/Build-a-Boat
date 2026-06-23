@@ -1,6 +1,7 @@
 extends Node3D
 
 @onready var world = $".."
+@onready var ship = $"../Ship"
 @onready var player = $"../Player"
 
 # Types of rocks
@@ -103,11 +104,15 @@ func loadBallistas(l: int, w: int):
 
 func _on_win_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
-		print("You win")
 		player.adjMoney(true, 100 + int(world.numAreas * 1.2))
 		player.position = Vector3(-20, 11, 0)
 		world.unlaunch()
 		$"../Player/LaunchButton".show()
+		ship.freeze = true
+		# For placed blocks:
+		# Delete them
+		# Move the BPZ/Actual location of where the blocks are to be recentered
+		# Also figure out why the player will not move on the starting area when launching 2nd time 
 
 
 func _on_water_area_body_entered(body: Node3D) -> void:
@@ -125,7 +130,6 @@ func _on_water_area_body_entered(body: Node3D) -> void:
 		if self.is_in_group("Incline"):
 			if body.is_in_group("Ship"):
 				body.incline = true
-				body.waterFlowMax = 10 # Shhhhhhh
 		
 		if self.is_in_group("SpeedUp"):
 			if body.is_in_group("player"):
@@ -163,8 +167,6 @@ func _on_water_area_body_exited(body: Node3D) -> void:
 		if self.is_in_group("Incline"):
 			if body.is_in_group("Ship"):
 				body.incline = false
-				if body.waterFlowMax == 10:
-					body.waterFlowMax = 6 # Shhhhhhh
 		
 		if self.is_in_group("SpeedUp"):
 			if body.is_in_group("player"):

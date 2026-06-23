@@ -17,11 +17,12 @@ var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 
 # Functions for calling each scene
 @onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene, crazyAreaScene]
-#    
-#    
+
+# Smaller one used for testing specific areas
+#@onready var possibleAreas = [evilCannonAreaScene]
 
 
-@onready var numAreas = 0 # Change to make more areas spawn
+@onready var numAreas = 10 # Change to make more areas spawn
 @onready var areaList = [] # List of procedurally generated areas
 @onready var totalSpaceX = 0 # Displacement between areas on the X
 @onready var totalSpaceY = 0 # Displacement between areas on the Y

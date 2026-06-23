@@ -7,6 +7,9 @@ extends CollisionShape3D
 @export var endurance = 1.0
 @export var luck = 1
 
+# Parent
+@onready var ship = $".."
+
 @onready var damageTouching = []
 @onready var inWater = false
 

@@ -13,8 +13,12 @@ func _process(delta: float) -> void:
 	self.global_position += direction * speed * delta
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body.is_in_group("Blocks"):
-		body.evilCannonHit()
+	if body.is_in_group("Ship"):
+		body.apply_central_force(-direction * 696)
+		for block in body.get_children():
+			if abs(block.global_position - self.global_position) < Vector3(0.25, 0.25, 0.25):
+				block.evilCannonHit()
+	print("Hit " + str(body.get_groups()))
 	queue_free()
 
 func setTarget(initialTarget: Vector3):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cy0o2t3eyoaaw"]
+[gd_scene format=3 uid="uid://cy0o2t3eyoaaw"]
 
 [ext_resource type="Script" uid="uid://2d46iuqjs4rm" path="res://Scripts/cannon_projectile.gd" id="1_o7avw"]
 
@@ -11,17 +11,17 @@ material = SubResource("StandardMaterial3D_o7avw")
 [sub_resource type="SphereShape3D" id="SphereShape3D_xg6ob"]
 radius = 0.52
 
-[node name="CannonProjectile" type="RigidBody3D"]
+[node name="CannonProjectile" type="RigidBody3D" unique_id=326439962]
 script = ExtResource("1_o7avw")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=24230406]
 mesh = SubResource("SphereMesh_42v2x")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=1508919453]
 collision_layer = 3
 collision_mask = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1687505329]
 shape = SubResource("SphereShape3D_xg6ob")
 debug_fill = false
 

@@ -17,6 +17,7 @@ extends CharacterBody3D
 # But yeah base is 55 for now, 0 later
 @onready var money = 1000
 # LATER - Start with 100 or so, enough for baby gacha, then yeh
+@onready var health = 100
 
 # UI Variables
 @onready var blocks = []
@@ -24,6 +25,9 @@ extends CharacterBody3D
 # Going down the list...
 @onready var camera = $Camera
 @onready var bpz = $"../BlockPlacementZone"
+@onready var cblockDis = $"StatDisplay/Current Block"
+@onready var moneyDis = $"StatDisplay/Current Money"
+@onready var healthDis = $"StatDisplay/Current Health"
 
 # Area Specific Variables
 @onready var poisoned = false
@@ -101,7 +105,8 @@ func _physics_process(delta: float) -> void:
 	
 	# Water touching logic
 	if is_on_floor() and inWater:
-		# Do damage
+		health -= 0.25
+		updateHealth()
 		
 		if direction == 0: # Forward
 			self.position.x += 0.1 * waterSpeed
@@ -137,6 +142,7 @@ func _ready() -> void:
 	
 	# Updates Player Display
 	updateMoney()
+	updateHealth()
 	
 	for block in bpz.blocks:
 		var path = block.resource_path
@@ -153,10 +159,10 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if !Globals.launched:
 		var bpz = get_parent().get_node("BlockPlacementZone")
-		$"Current Block".text = "Current block = " + str(blocks[bpz.blockIndex]) + "\n     " + str(blockCountList[bpz.blockIndex])
+		cblockDis.text = "Current block = " + str(blocks[bpz.blockIndex]) + "\n     " + str(blockCountList[bpz.blockIndex])
 	else:
 		$LaunchButton.hide()
-		$"Current Block".text = ""
+		cblockDis.text = ""
 
 
 
@@ -166,7 +172,7 @@ func _process(delta: float) -> void:
 
 # Updates Money Display
 func updateMoney():
-	$"Current Money".text = "$" + str(money)
+	moneyDis.text = "$" + str(money)
 # Updates Money
 func adjMoney(operation: bool, change: int): # True = Add, False = Subtract
 	if operation:
@@ -179,8 +185,22 @@ func adjMoney(operation: bool, change: int): # True = Add, False = Subtract
 	updateMoney()
 	return true
 
+# Updates Health Display
+func updateHealth():
+	var intHealth = int(health)
+	if !intHealth:
+		intHealth += 1
+	healthDis.text = str(intHealth) + " HP"
+	
+	if health <= 0:
+		die()
+
+func die():
+	print("Dead") # Do something later
+
 # Interact with water function
 func enterWater():
+	health -= 5 # Chunk of damage when first touching water
 	touchWater += 1
 	inWater = true
 func exitWater():
@@ -200,7 +220,8 @@ func enterPoison():
 func exitPoison():
 	poisoned = false
 func poisonTick(): # CURRENTLY EMPTY
-	pass
+	health *= 0.99
+	updateHealth()
 
 # Fast area functions
 func changeSpeed(area: bool): # True = fastArea, False = crazyArea

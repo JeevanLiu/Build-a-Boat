@@ -7,7 +7,7 @@ extends RigidBody3D
 @onready var waterFlowVel = 6
 @onready var waterFlowMax = 6
 @onready var incline = false
-@onready var inclineBoost = 1.5
+@onready var inclineBoost = Vector3(0, 0.5, 0)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,18 +18,24 @@ func _physics_process(delta: float) -> void:
 	
 	# Water touching logic
 	if Globals.launched and inWater:
+		apply_central_impulse(Vector3(0, 100, 0))
 		if direction == 0: # Forward
-			linear_velocity.x += waterFlowVel
+			#linear_velocity.x += waterFlowVel
+			apply_central_force(Vector3(100, 0, 0))
 		elif direction == -2: # Left
-			linear_velocity.z -= waterFlowVel
+			#linear_velocity.z -= waterFlowVel
+			apply_central_force(Vector3(0, 0, -100))
 		elif direction == 2: # Right
-			linear_velocity.z += waterFlowVel
+			#linear_velocity.z += waterFlowVel
+			apply_central_force(Vector3(0, 0, 100))
 		elif direction == -1: # Diagonally Left
-			linear_velocity.x += waterFlowVel
-			linear_velocity.z -= waterFlowVel
+			#linear_velocity.x += waterFlowVel
+			#linear_velocity.z -= waterFlowVel
+			apply_central_force(Vector3(75, 0, -75))
 		elif direction == 1: # Diagonally Right
-			linear_velocity.x += waterFlowVel
-			linear_velocity.z += waterFlowVel
+			#linear_velocity.x += waterFlowVel
+			#linear_velocity.z += waterFlowVel
+			apply_central_force(Vector3(75, 0, 75))
 		if linear_velocity.x > waterFlowMax:
 			linear_velocity.x = waterFlowMax
 		if abs(linear_velocity.z) > waterFlowMax:
@@ -44,9 +50,10 @@ func _physics_process(delta: float) -> void:
 		linear_velocity += get_gravity() * delta
 	
 	if incline:
-		linear_velocity.y = inclineBoost
+		#linear_velocity.y = inclineBoost
+		apply_central_force(inclineBoost)
 	
-	print("ship linear velocity = ", linear_velocity)
+	#print("ship linear velocity = ", linear_velocity) # Debugging velocity issues
 
 # Interact with water function
 func enterWater():
