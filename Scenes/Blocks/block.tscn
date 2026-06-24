@@ -23,7 +23,7 @@ health = 3.0
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=42661347]
 mesh = SubResource("BoxMesh_4yl8j")
 
-[node name="DamageArea" type="Area3D" parent="." unique_id=2052375136]
+[node name="DamageArea" type="Area3D" parent="." unique_id=2052375136 groups=["Blocks"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DamageArea" unique_id=1921964678]
 shape = SubResource("BoxShape3D_4yl8j")

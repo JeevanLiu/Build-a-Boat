@@ -138,9 +138,8 @@ func explode():
 	# Impulse effect
 	var epic = self.global_position - ship.global_position
 	var epic2 = epic.normalized()
-	var epic3 = Vector3(tanh(epic2.x), tanh(epic2.y), tanh(epic2.z))
-	ship.apply_impulse(epic3, self.global_position)
-	print("Applied " + str(epic3) + " in the direction" + str(epic))
+	ship.apply_impulse(epic2, self.global_position)
+	print("Applied " + str(epic2) + " in the direction" + str(epic))
 
 func damage(amount):
 	# Luck logic:

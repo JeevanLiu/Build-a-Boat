@@ -17,17 +17,18 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if player:
+	if player and Globals.launched:
 		if player in $"../Area3D".get_overlapping_bodies():
 			rain()
 
 func rain():
-	var newDrop = acidDroplet.instantiate()
-	# Sets up the position of the newLilRock
-	newDrop.position = Vector3(randi_range(-l, l), 0, randi_range(-w, w))
-	
-	# Makes newLilRock a child of the scene
-	add_child(newDrop)
+	if randf() > 0.75:
+		var newDrop = acidDroplet.instantiate()
+		# Sets up the position of the newLilRock
+		newDrop.position = Vector3(randi_range(-l, l), 0, randi_range(-w, w))
+		
+		# Makes newLilRock a child of the scene
+		add_child(newDrop)
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	# Function determining if the player is nearby (body has a large radius around the cloud)

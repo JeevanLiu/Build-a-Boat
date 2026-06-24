@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7n2ns8ljaag"]
+[gd_scene format=3 uid="uid://c7n2ns8ljaag"]
 
 [ext_resource type="Script" uid="uid://cflbfpt3xv72" path="res://Scripts/raindrop.gd" id="1_6xbet"]
 
@@ -14,17 +14,17 @@ height = 1.0
 radius = 0.26
 height = 1.01
 
-[node name="AcidDrop" type="RigidBody3D"]
+[node name="AcidDrop" type="RigidBody3D" unique_id=1070343700]
 script = ExtResource("1_6xbet")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=168892298]
 mesh = SubResource("CapsuleMesh_xlxlc")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Area3D" type="Area3D" parent="." unique_id=57382349]
 collision_layer = 3
 collision_mask = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1839638966]
 shape = SubResource("CapsuleShape3D_tlg0q")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

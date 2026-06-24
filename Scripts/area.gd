@@ -189,7 +189,7 @@ func _on_water_area_body_exited(body: Node3D) -> void:
 
 
 func _on_tide_area_body_entered(body: Node3D) -> void:
-	if body.is_in_group("player") and Globals.launched:
+	if body.is_in_group("player"):
 		$TideAnimation.play("Wave")
 
 
