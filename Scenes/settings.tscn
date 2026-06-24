@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://b6yj875k42uax"]
+
+[ext_resource type="Script" uid="uid://dkcvmgivphss4" path="res://Scripts/settings.gd" id="1_4geyq"]
+
+[sub_resource type="Theme" id="Theme_v0iea"]
+Button/colors/font_color = Color(0.003921569, 0, 0, 1)
+
+[node name="Settings" type="Node2D" unique_id=1037159272]
+script = ExtResource("1_4geyq")
+
+[node name="BG" type="ColorRect" parent="." unique_id=699285087]
+visible = false
+custom_minimum_size = Vector2(900, 500)
+offset_left = 122.0
+offset_top = 77.0
+offset_right = 1022.0
+offset_bottom = 577.0
+color = Color(0.36078432, 0.42745098, 0.13333334, 0.9254902)
+
+[node name="Settings" type="Button" parent="." unique_id=939980111]
+offset_left = 20.0
+offset_top = 25.0
+offset_right = 107.0
+offset_bottom = 56.0
+text = "  Settings  "
+
+[node name="LaunchButton" type="Button" parent="." unique_id=690380621]
+offset_left = 1059.0
+offset_top = 298.0
+offset_right = 1132.0
+offset_bottom = 354.0
+theme = SubResource("Theme_v0iea")
+text = " Launch "
+
+[node name="Restart" type="Button" parent="." unique_id=176804514]
+visible = false
+offset_left = 254.0
+offset_top = 372.0
+offset_right = 360.0
+offset_bottom = 403.0
+text = "  Reset Map  "
+
+[node name="Change" type="Button" parent="." unique_id=1161447126]
+visible = false
+offset_left = 460.0
+offset_top = 504.0
+offset_right = 617.0
+offset_bottom = 535.0
+text = "  Confirm Changes  "
+
+[node name="NumAreas" type="TextEdit" parent="." unique_id=2026976640]
+visible = false
+offset_left = 816.0
+offset_top = 267.0
+offset_right = 884.0
+offset_bottom = 307.0
+placeholder_text = "N/A"
+
+[node name="NumAreasL" type="Label" parent="." unique_id=1379865387]
+visible = false
+offset_left = 650.0
+offset_top = 275.0
+offset_right = 803.0
+offset_bottom = 298.0
+text = "  Number of Areas:  "
+
+[connection signal="pressed" from="Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="LaunchButton" to="." method="_on_launch_button_pressed"]
+[connection signal="pressed" from="Restart" to="." method="_on_restart_pressed"]
+[connection signal="pressed" from="Change" to="." method="_on_change_pressed"]

@@ -145,6 +145,3 @@ func damage(amount):
 	# Luck logic:
 	if randf_range(0, 100) > luck:
 		health -= (amount / endurance)
-		print("Damage taken, new health = ", health)
-	else:
-		print("Lucky break")

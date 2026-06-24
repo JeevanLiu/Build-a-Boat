@@ -17,10 +17,10 @@ var leftOffset = Vector3(0, 0, 1)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if self.get_parent().get_parent().direction == -1:
+	if self.get_parent().get_parent().get_parent().direction == -1:
 		leftOffset = Vector3(1, 0, 0)
 		rightOffset = Vector3(-1, 0, 0)
-	elif self.get_parent().get_parent().direction == 1:
+	elif self.get_parent().get_parent().get_parent().direction == 1:
 		leftOffset = Vector3(-1, 0, 0)
 		rightOffset = Vector3(1, 0, 0)
 	

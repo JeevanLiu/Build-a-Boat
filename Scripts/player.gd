@@ -28,6 +28,7 @@ extends CharacterBody3D
 @onready var cblockDis = $"StatDisplay/Current Block"
 @onready var moneyDis = $"StatDisplay/Current Money"
 @onready var healthDis = $"StatDisplay/Current Health"
+@onready var cameraDist = $Camera/SpringArm3D
 
 # Area Specific Variables
 @onready var poisoned = false
@@ -68,7 +69,7 @@ func _input(event):
 	
 	# Place block
 	# if (buildable):
-	if (event is InputEventMouseButton and Input.is_action_just_pressed("right_click")):
+	if (event is InputEventMouseButton and Input.is_action_just_pressed("left_click")):
 		if (Input.is_action_pressed("ready_block")):
 			var click_pos : Vector4 = getClickPosition(event.position)
 			# click_pos.w == 0, no hit, return
@@ -78,13 +79,23 @@ func _input(event):
 			var vec_pos := Vector3(click_pos.x, click_pos.y, click_pos.z)
 			placeBlock.emit(vec_pos, "")
 			
-	# Scrolls the block
+	# Adjusts the block
 	if event.is_action_pressed("menu_left"): # Left first to handle shift + tab vs tab
 		scrollBlock.emit(false)
 		scrollBlock.emit(false)
 	elif event.is_action_pressed("menu_right"):
 		scrollBlock.emit(true)
 		scrollBlock.emit(true)
+	
+	# Scrolls the camera
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			if cameraDist.scale <= Vector3(20, 20, 20):
+				$Camera/SpringArm3D.scale += Vector3(0.1, 0.1, 0.1)
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			if cameraDist.scale >= Vector3.ONE:
+				$Camera/SpringArm3D.scale -= Vector3(0.1, 0.1, 0.1)
+			
 
 
 func _physics_process(delta: float) -> void:
@@ -161,15 +172,10 @@ func _process(delta: float) -> void:
 		var bpz = get_parent().get_node("BlockPlacementZone")
 		cblockDis.text = "Current block = " + str(blocks[bpz.blockIndex]) + "\n     " + str(blockCountList[bpz.blockIndex])
 	else:
-		$LaunchButton.hide()
 		cblockDis.text = ""
 		
 	if poisoned:
 		poisonTick()
-
-
-
-
 
 # General and Display Functions
 
@@ -203,7 +209,7 @@ func damage(amount):
 	updateHealth()
 
 func die():
-	print("Dead") # Do something later
+	pass # Do something later
 
 # Interact with water function
 func enterWater():
@@ -233,14 +239,17 @@ func poisonTick():
 	updateHealth()
 
 # Fast area functions
-func changeSpeed(area: bool): # True = fastArea, False = crazyArea
-	if waterSpeed == 1:
-		if area:
-			waterSpeed = 7.5
-		else:
-			waterSpeed = 3
+func changeSpeed(area: bool, up: bool): # True = fastArea, False = crazyArea -- True = speed up, false = slow down
+	var change
+	if up:
+		change = 1
 	else:
-		waterSpeed = 1
+		change = -1
+	
+	if area:
+		waterSpeed += change * 6.5
+	else:
+		waterSpeed += change * 2
 
 
 # click screen input
@@ -258,7 +267,3 @@ func getClickPosition(pos : Vector2):
 	var hit_loc = ray.get_collision_point() + (0.5 * ray.get_collision_normal())
 	
 	return Vector4(hit_loc.x, hit_loc.y, hit_loc.z, 1.0)
-
-
-func _on_launch_button_pressed() -> void:
-	get_parent().launch()

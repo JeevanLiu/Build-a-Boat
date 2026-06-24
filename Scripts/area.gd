@@ -1,8 +1,8 @@
 extends Node3D
 
-@onready var world = $".."
-@onready var ship = $"../Ship"
-@onready var player = $"../Player"
+@onready var world = $"../.."
+@onready var ship = $"../../Ship"
+@onready var player = $"../../Player"
 
 # Types of rocks
 @onready var bigRock = preload("res://Scenes/Water_Areas/Objects/big_rock.tscn")
@@ -100,56 +100,45 @@ func loadBallistas(l: int, w: int):
 		# Makes newLilRock a child of the scene
 		add_child(newBallista)
 
+func _physics_process(delta: float) -> void:
+	for body in $Water/WaterArea.get_overlapping_bodies():
+		if body.is_in_group("Ship") or body.is_in_group("player"):
+			var selfDir = self.rotation.y
+			if self.is_in_group("Corner"):
+				await get_tree().create_timer(0.5).timeout
+				if (is_equal_approx(selfDir, (PI / 2))) or (is_equal_approx(selfDir, - (PI / 2))):  # Entire area facing left, or forward turning left
+					body.turn(-1)
+				elif (selfDir == 0) or (is_equal_approx(selfDir, PI)): # Entire area facing right, or forward turning right
+					body.turn(1)
+			else:
+				if selfDir == 0:
+					body.turn(0)
+				elif is_equal_approx(selfDir, - (PI / 2)):
+					body.turn(2)
+				elif is_equal_approx(selfDir, (PI / 2)):
+					body.turn(-2)
+
 # DURING GAME AREA ENTERING FUNCTIONS
 
 func _on_win_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player"):
-		player.adjMoney(true, 100 + int(world.numAreas * 1.2))
-		player.position = Vector3(-20, 11, 0)
-		world.unlaunch()
-		$"../Player/LaunchButton".show()
-		ship.freeze = true
-		# For placed blocks:
-		# Delete them
-		# Move the BPZ/Actual location of where the blocks are to be recentered
-		# Also figure out why the player will not move on the starting area when launching 2nd time 
-
+		world.unlaunch(true)
 
 func _on_water_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player") or body.is_in_group("Ship"):
 		print("Touching water")
 		body.enterWater()
 		
-		var selfDir = self.rotation.y
-		if selfDir == 0:
-			body.turn(0)
-		elif is_equal_approx(selfDir, - (PI / 2)):
-			body.turn(2)
-		elif is_equal_approx(selfDir, (PI / 2)):
-			body.turn(-2)
-		
 		if self.is_in_group("Incline"):
 			if body.is_in_group("Ship"):
 				body.incline = true
 		
 		if self.is_in_group("SpeedUp"):
-			if body.is_in_group("player"):
-				if self.name == "FastArea":
-					body.changeSpeed(true)
-				else:
-					body.changeSpeed(false)
+			if self.numLilRocks == 25:
+				body.changeSpeed(true, true)
 			else:
-				if self.name == "FastArea":
-					body.waterFlowMax += 30
-				else:
-					body.waterFlowMax += 10
-		
-		# Corner turning
-		if self.is_in_group("Corner"):
-			if (is_equal_approx(selfDir, (PI / 2))) or (is_equal_approx(selfDir, - (PI / 2))):  # Entire area facing left, or forward turning left
-				body.turn(-1)
-			elif (selfDir == 0) or (is_equal_approx(selfDir, PI)): # Entire area facing right, or forward turning right
-				body.turn(1)
+				print(self.name)
+				body.changeSpeed(false, true)
 		
 		# layer specific events:
 		if !body.is_in_group("Ship"):
@@ -170,18 +159,10 @@ func _on_water_area_body_exited(body: Node3D) -> void:
 				body.incline = false
 		
 		if self.is_in_group("SpeedUp"):
-			if body.is_in_group("player"):
-				if self.name == "FastArea":
-					body.changeSpeed(true)
-				else:
-					body.changeSpeed(false)
+			if self.numLilRocks == 25:
+				body.changeSpeed(true, false)
 			else:
-				if body.waterFlowMax > 15:
-					if self.name == "FastArea":
-						body.waterFlowMax -= 30
-					else:
-						body.waterFlowMax -= 10
-					
+				body.changeSpeed(false, false)
 		
 		if !body.is_in_group("Ship"):
 			if self.is_in_group("hasPoison"):

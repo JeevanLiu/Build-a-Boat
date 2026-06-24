@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bg2lnhwfrjje8" path="res://Scripts/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://b77et8g4b8k33" path="res://Scenes/gacha.tscn" id="2_cvnsp"]
+[ext_resource type="PackedScene" uid="uid://b6yj875k42uax" path="res://Scenes/settings.tscn" id="3_6t5aa"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vigqh"]
 
@@ -19,9 +20,6 @@ height = 0.1
 radial_segments = 5
 rings = 5
 
-[sub_resource type="Theme" id="Theme_v0iea"]
-Button/colors/font_color = Color(0.003921569, 0, 0, 1)
-
 [node name="Player" type="CharacterBody3D" unique_id=1803403783 groups=["player"]]
 script = ExtResource("1_v0iea")
 
@@ -33,10 +31,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_e5alk")
 shape = SubResource("CapsuleShape3D_mqyi5")
 
 [node name="Camera" type="Node3D" parent="." unique_id=1778756242]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 1.2, 0)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Camera" unique_id=774218929]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0.5, 0.5, 0)
 collision_mask = 16
 shape = SubResource("SphereShape3D_nsk3r")
 spring_length = 2.0
@@ -51,14 +49,6 @@ transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("SphereMesh_v0iea")
 skeleton = NodePath("../..")
 
-[node name="LaunchButton" type="Button" parent="." unique_id=927665902]
-offset_left = 1059.0
-offset_top = 298.0
-offset_right = 1132.0
-offset_bottom = 354.0
-theme = SubResource("Theme_v0iea")
-text = " Launch "
-
 [node name="Gacha" parent="." unique_id=264201573 instance=ExtResource("2_cvnsp")]
 
 [node name="StatDisplay" type="Node2D" parent="." unique_id=791592127]
@@ -71,10 +61,10 @@ offset_bottom = 305.0
 text = "N/A"
 
 [node name="Current Money" type="Label" parent="StatDisplay" unique_id=279545951]
-offset_left = 24.0
-offset_top = 17.0
-offset_right = 64.0
-offset_bottom = 40.0
+offset_left = 684.0
+offset_top = 42.0
+offset_right = 724.0
+offset_bottom = 65.0
 text = "N/A"
 
 [node name="Current Health" type="Label" parent="StatDisplay" unique_id=1970978611]
@@ -84,4 +74,4 @@ offset_right = 1090.0
 offset_bottom = 40.0
 text = "N/A"
 
-[connection signal="pressed" from="LaunchButton" to="." method="_on_launch_button_pressed"]
+[node name="Settings" parent="." unique_id=1037159272 instance=ExtResource("3_6t5aa")]

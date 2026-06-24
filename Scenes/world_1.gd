@@ -19,10 +19,10 @@ var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 @onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene, crazyAreaScene]
 
 # Smaller one used for testing specific areas
-#@onready var possibleAreas = [acidRainAreaScene]
+#@onready var possibleAreas = [fastAreaScene, cornerAreaScene]
 
 
-@onready var numAreas = 5 # Change to make more areas spawn
+@onready var numAreas = 4 # Change to make more areas spawn
 @onready var areaList = [] # List of procedurally generated areas
 @onready var totalSpaceX = 0 # Displacement between areas on the X
 @onready var totalSpaceY = 0 # Displacement between areas on the Y
@@ -33,14 +33,11 @@ var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 @onready var player = $Player
 @onready var ship = $Ship
 @onready var blockZone = $BlockPlacementZone
+@onready var parentArea = $ParentArea
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for i in range(numAreas):
-		var nextArea = possibleAreas.pick_random()
-		loadArea(nextArea)
-	
-	loadArea(endingAreaScene)
+	createMap()
 	
 	# connect player signals
 	player.placeBlock.connect(placeBlock)
@@ -133,8 +130,17 @@ func loadArea(areaType: PackedScene):
 				direction = -1
 	
 	# Makes newArea a child of the scene
-	add_child(newArea)
+	parentArea.add_child(newArea)
 
+func createMap():
+	for child in parentArea.get_children():
+		child.queue_free()
+	
+	for i in range(numAreas):
+		var nextArea = possibleAreas.pick_random()
+		loadArea(nextArea)
+	
+	loadArea(endingAreaScene)
 
 func _on_water_area_body_entered(body: Node3D) -> void:
 	if body.is_in_group("player") or body.is_in_group("Blocks"):
@@ -153,6 +159,34 @@ func launch():
 	ship.freeze = false
 	ship.turn(0)
 
-func unlaunch():
-	Globals.launched = false
+func unlaunch(win: bool): # If we won then win = true
+	# Map
 	$LaunchAnimation.play_backwards()
+	Globals.launched = false
+	# Make a button/menu for customizing the number of areas and areas that can exist
+	totalSpaceX = 0 # Displacement between areas on the X
+	totalSpaceY = 0 # Displacement between areas on the Y
+	totalSpaceZ = 0 # Displacement between areas on the Z
+	direction = 0 # 0 = forward, -1 = left, 1 = right
+	
+	createMap()
+	
+	# Player
+	var amountWon = int(numAreas * 1.2)
+	if win:
+		amountWon += 100
+	player.adjMoney(true, amountWon)
+	player.position = Vector3(-20, 15, 0)
+	$"Player/Settings/LaunchButton".show()
+	
+	# Boat
+	ship.freeze = true
+	ship.position = Vector3.ZERO
+	ship.rotation = Vector3.ZERO
+	ship.linear_velocity = Vector3.ZERO
+	for child in ship.get_children():
+		child.queue_free()
+	
+	# For placed blocks:
+	# Move the BPZ/Actual location of where the blocks are to be recentered
+	# Also figure out why the player will not move on the starting area when launching 2nd time 

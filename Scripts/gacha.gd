@@ -1,12 +1,9 @@
 extends Node2D
 
-@onready var shopOpen = false
-
 # Important text/Buttons changing:
 @onready var shopButton = $Shop
 @onready var exShopButton = $ExitShop
-@onready var commonGacha = $"Gacha Types/Common"
-@onready var rareGacha = $"Gacha Types/Rare"
+@onready var gacha = $"Gacha Types"
 @onready var bg = $Background
 @onready var winnings = $Winnings
 @onready var winDTimer = $Winnings/Timer
@@ -14,31 +11,16 @@ extends Node2D
 @onready var bpz = $"../../BlockPlacementZone"
 @onready var player = $".."
 
-
-func screenSwap():
-	shopOpen = !shopOpen
-
-func closeChanges():
-	shopButton.show()
-	commonGacha.hide()
-	rareGacha.hide()
-	exShopButton.hide()
-	bg.hide()
-
-func openChanges():
-	shopButton.hide()
-	commonGacha.show()
-	rareGacha.show()
-	exShopButton.show()
-	bg.show()
+func changeMenu():
+	for child in self.get_children():
+		if child != winnings:
+			child.visible = !child.visible
 
 func _on_exit_shop_pressed() -> void:
-	screenSwap()
-	closeChanges()
+	changeMenu()
 
 func _on_shop_pressed() -> void:
-	screenSwap()
-	openChanges()
+	changeMenu()
 
 func _on_gacha_button_pressed() -> void:
 	if player.adjMoney(false, 100):

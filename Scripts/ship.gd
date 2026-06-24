@@ -4,7 +4,6 @@ extends RigidBody3D
 @onready var inWater = true
 @onready var touchWater = 0
 @onready var direction = 0
-@onready var waterFlowVel = 6
 @onready var waterFlowMax = 6
 @onready var incline = false
 @onready var inclineBoost = Vector3(0, 1.5, 0)
@@ -21,7 +20,7 @@ func _physics_process(delta: float) -> void:
 	var childLog = log(childCount)
 	if childLog > 1:
 		mass = childLog
-		inertia = Vector3(childLog, childLog, childLog)
+		inertia = Vector3(childCount, childCount, childCount)
 	
 	# Water touching logic
 	if Globals.launched and inWater:
@@ -58,17 +57,18 @@ func exitWater():
 		set_constant_force(Vector3.ZERO)
 
 # Fast area functions
-func changeSpeed(area: bool): # True = fastArea, false = crazyArea
-	if area:
-		if waterFlowMax == 30:
-			waterFlowMax = 6
-		else:
-			waterFlowMax = 30
+func changeSpeed(area: bool, up: bool): # True = fastArea, false = crazyArea -- True = speed up, false = slow down
+	var change
+	if up:
+		change = 1
 	else:
-		if waterFlowMax == 12.5:
-			waterFlowMax = 6
-		else:
-			waterFlowMax = 12.5
+		change = -1
+	
+	if area:
+		waterFlowMax += change * 30
+	else:
+		waterFlowMax += change * 12.5
+	print("New max velocity:" + str(waterFlowMax))
 
 func on_floor():
 	return abs(linear_velocity.y) < 0.1
