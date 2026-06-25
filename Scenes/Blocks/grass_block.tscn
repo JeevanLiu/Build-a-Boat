@@ -11,7 +11,7 @@ stencil_flags = 2
 material = SubResource("StandardMaterial3D_8ucy6")
 
 [node name="GrassBlock" unique_id=1021266519 instance=ExtResource("1_bnwcw")]
-health = 5.0
+maxHealth = 5.0
 endurance = 0.25
 luck = 5
 acidEndurance = 100.0

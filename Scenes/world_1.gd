@@ -144,6 +144,7 @@ func createMap():
 
 func launch():
 	Globals.launched = true
+	$"Player/Abilities".activateAbilities()
 	$LaunchAnimation.play("Launch")
 	
 	# Unfreezes blocks when the water shows up

@@ -31,6 +31,7 @@ extends CharacterBody3D
 @onready var healthDis = $"StatDisplay/Current Health"
 @onready var cameraDist = $Camera/SpringArm3D
 @onready var settings = $Settings
+@onready var abilities = $Abilities
 
 # Area Specific Variables
 @onready var poisoned = false
@@ -59,6 +60,13 @@ func _input(event):
 	# Settings open on esc
 	if Input.is_action_just_pressed("ui_text_clear_carets_and_selection"):
 		settings.changeMenu()
+	
+	# Abilities
+	if Input.is_action_just_pressed("numbers"):
+		var num = event.as_text().to_int() - 1
+		if num == -1:
+			num = 9
+		abilities.abilityList[num].call()
 	
 	# Handles the camera... Thank you Jus
 	if (event is InputEventMouseMotion):

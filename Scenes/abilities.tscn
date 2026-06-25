@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://djtx7xdvjhs37"]
+
+[ext_resource type="Script" uid="uid://b4x3fg545md1i" path="res://Scripts/abilities.gd" id="1_r66qs"]
+
+[node name="Abilities" type="Node2D" unique_id=2064691941]
+script = ExtResource("1_r66qs")
+
+[node name="Ability1" type="Label" parent="." unique_id=69873791]
+offset_left = 157.0
+offset_top = 584.0
+offset_right = 247.0
+offset_bottom = 607.0
+text = "  1 - Freeze  "
+
+[node name="Ability2" type="Label" parent="." unique_id=896675224]
+offset_left = 393.0
+offset_top = 593.0
+offset_right = 473.0
+offset_bottom = 616.0
+text = "  2 - Jump  "
+
+[node name="Ability3" type="Label" parent="." unique_id=1232194554]
+offset_left = 637.0
+offset_top = 589.0
+offset_right = 750.0
+offset_bottom = 612.0
+text = "  3 - Speed Up  "
+
+[node name="Ability4" type="Label" parent="." unique_id=517888658]
+offset_left = 847.0
+offset_top = 584.0
+offset_right = 976.0
+offset_bottom = 607.0
+text = "  4 - Heal Blocks  "

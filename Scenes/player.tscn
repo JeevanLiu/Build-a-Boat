@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bg2lnhwfrjje8" path="res://Scripts/player.gd" id="1_v0iea"]
 [ext_resource type="PackedScene" uid="uid://b77et8g4b8k33" path="res://Scenes/gacha.tscn" id="2_cvnsp"]
 [ext_resource type="PackedScene" uid="uid://b6yj875k42uax" path="res://Scenes/settings.tscn" id="3_6t5aa"]
+[ext_resource type="PackedScene" uid="uid://djtx7xdvjhs37" path="res://Scenes/abilities.tscn" id="4_vgqql"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vigqh"]
 
@@ -75,3 +76,5 @@ offset_bottom = 40.0
 text = "N/A"
 
 [node name="Settings" parent="." unique_id=1037159272 instance=ExtResource("3_6t5aa")]
+
+[node name="Abilities" parent="." unique_id=2064691941 instance=ExtResource("4_vgqql")]

@@ -7,6 +7,8 @@ extends RigidBody3D
 @onready var incline = false
 @onready var inclineBoost = Vector3(0, 1.5, 0)
 
+@onready var specialCase = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -23,15 +25,15 @@ func _physics_process(delta: float) -> void:
 	
 	# Water touching logic
 	
-	if linear_velocity.x > waterFlowMax:
+	if linear_velocity.x > waterFlowMax and !specialCase:
 		linear_velocity.x = waterFlowMax
-	if abs(linear_velocity.z) > waterFlowMax:
+	if abs(linear_velocity.z) > waterFlowMax and !specialCase:
 		if direction < 0:
 			linear_velocity.z = -waterFlowMax
 		else:
 			linear_velocity.z = waterFlowMax
 	
-	if touchWater > 1 and is_equal_approx(self.linear_velocity.x, 0) and is_equal_approx(self.linear_velocity.y, 0) and is_equal_approx(self.linear_velocity.z, 0):
+	if touchWater > 1 and !self.freeze and is_equal_approx(self.linear_velocity.x, 0) and is_equal_approx(self.linear_velocity.y, 0) and is_equal_approx(self.linear_velocity.z, 0):
 		print("Almost 0!")
 		self.linear_velocity.y = 20
 	
@@ -89,4 +91,5 @@ func move():
 
 func turn(newDir):
 	direction = newDir
-	move()
+	if !self.freeze:
+		move()

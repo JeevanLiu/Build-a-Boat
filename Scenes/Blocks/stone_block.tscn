@@ -12,6 +12,7 @@ material = SubResource("StandardMaterial3D_g5fvj")
 
 [node name="StoneBlock" unique_id=1021266519 instance=ExtResource("1_h6uup")]
 health = 5.0
+maxHealth = 5.0
 endurance = 1.5
 acidEndurance = 4.0
 
