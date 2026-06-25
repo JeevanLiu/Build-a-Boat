@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bkdsnx3e8kqsg" path="res://Scenes/player.tscn" id="2_brd3p"]
 [ext_resource type="Script" uid="uid://dnyykc0kbpqvm" path="res://Scripts/block_placement_zone.gd" id="3_ax6sa"]
 [ext_resource type="Script" uid="uid://deas84vsetq5e" path="res://Scripts/ship.gd" id="4_d4kua"]
+[ext_resource type="Script" uid="uid://bluyjt2e8orxu" path="res://Scripts/area.gd" id="5_12jk7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nsk3r"]
 sky_top_color = Color(0.19607843, 0.90588236, 1, 1)
@@ -34,30 +35,42 @@ resource_name = "Launch"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ReplacementWater:position")
+tracks/0/path = NodePath("Ground:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(-1, -1, 0), Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Ground:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0.5, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(0, -0.01, 0), Vector3(-1, -1, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Water:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1, 1, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_d4kua"]
 length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Water:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_12jk7"]
 _data = {
@@ -114,23 +127,6 @@ placeBlockDistance = 22
 libraries/ = SubResource("AnimationLibrary_12jk7")
 playback_default_blend_time = 5.0
 
-[node name="ReplacementWater" type="StaticBody3D" parent="." unique_id=1523563098]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -1, 0)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ReplacementWater" unique_id=7958654]
-mesh = SubResource("BoxMesh_12jk7")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ReplacementWater" unique_id=756485924]
-shape = SubResource("BoxShape3D_wyo6c")
-debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
-
-[node name="WaterArea" type="Area3D" parent="ReplacementWater" unique_id=303716276 groups=["water"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ReplacementWater/WaterArea" unique_id=928829934 groups=["water"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-shape = SubResource("BoxShape3D_dksw6")
-
 [node name="Ship" type="RigidBody3D" parent="." unique_id=1550625643 groups=["Ship", "SpeedUp"]]
 inertia = Vector3(1, 1, 1)
 freeze = true
@@ -140,5 +136,27 @@ script = ExtResource("4_d4kua")
 
 [node name="ParentArea" type="Node3D" parent="." unique_id=1156050511]
 
-[connection signal="body_entered" from="ReplacementWater/WaterArea" to="." method="_on_water_area_body_entered"]
-[connection signal="body_exited" from="ReplacementWater/WaterArea" to="." method="_on_water_area_body_exited"]
+[node name="Water" type="Node3D" parent="." unique_id=1704098512]
+script = ExtResource("5_12jk7")
+numLilRocks = 0
+numBigRocks = 0
+
+[node name="Water" type="StaticBody3D" parent="Water" unique_id=2088291616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Water/Water" unique_id=656765539]
+mesh = SubResource("BoxMesh_12jk7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water/Water" unique_id=465365135]
+shape = SubResource("BoxShape3D_wyo6c")
+debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
+
+[node name="WaterArea" type="Area3D" parent="Water/Water" unique_id=681124170 groups=["water"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water/Water/WaterArea" unique_id=364155140 groups=["water"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_dksw6")
+
+[connection signal="body_entered" from="Water/Water/WaterArea" to="Water" method="_on_water_area_body_entered"]
+[connection signal="body_exited" from="Water/Water/WaterArea" to="Water" method="_on_water_area_body_exited"]

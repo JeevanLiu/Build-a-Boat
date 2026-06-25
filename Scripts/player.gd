@@ -14,10 +14,11 @@ extends CharacterBody3D
 # Player specific count variables
 @onready var blockCountList = []
 # Decrement during placement, read off of a file or something, OR DATABASE, add when gachad/bought
-# But yeah base is 55 for now, 0 later... added in _ready
+# But yeah base is 55 for now, 0 later... added in getPlayerBlocks()
 @onready var money = 1000
 # LATER - Start with 100 or so, enough for baby gacha, then yeh
 @onready var health = 100
+@onready var maxHealth = 100
 
 # UI Variables
 @onready var blocks = []
@@ -154,10 +155,7 @@ func _physics_process(delta: float) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
-	# DELETE LATER - THIS IS FOR ADDING 55 BLOCKS FOR ALL BLOCKS
-	for i in range(0, len(bpz.blocks)):
-		blockCountList.append(55)
+	getPlayerBlocks()
 	
 	# Updates Player Display
 	updateMoney()
@@ -275,3 +273,9 @@ func getClickPosition(pos : Vector2):
 	var hit_loc = ray.get_collision_point() + (0.5 * ray.get_collision_normal())
 	
 	return Vector4(hit_loc.x, hit_loc.y, hit_loc.z, 1.0)
+
+func getPlayerBlocks():
+	blockCountList.clear()
+	# DELETE LATER - THIS IS FOR ADDING 55 BLOCKS FOR ALL BLOCKS
+	for i in range(0, len(bpz.blocks)):
+		blockCountList.append(55)

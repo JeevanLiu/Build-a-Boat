@@ -1,7 +1,6 @@
 extends RigidBody3D
 
 @onready var hit = false
-@onready var inWater = true
 @onready var touchWater = 0
 @onready var direction = 0
 @onready var waterFlowMax = 6
@@ -23,22 +22,22 @@ func _physics_process(delta: float) -> void:
 		inertia = Vector3(childCount, childCount, childCount)
 	
 	# Water touching logic
-	if Globals.launched and inWater:
-		if linear_velocity.x > waterFlowMax:
-			linear_velocity.x = waterFlowMax
-		if abs(linear_velocity.z) > waterFlowMax:
-			if direction < 0:
-				linear_velocity.z = -waterFlowMax
-			else:
-				linear_velocity.z = waterFlowMax
 	
-	if on_floor():
-		linear_velocity.y = 0
-	else:
-		linear_velocity += get_gravity() * delta
+	if linear_velocity.x > waterFlowMax:
+		linear_velocity.x = waterFlowMax
+	if abs(linear_velocity.z) > waterFlowMax:
+		if direction < 0:
+			linear_velocity.z = -waterFlowMax
+		else:
+			linear_velocity.z = waterFlowMax
+	
+	if touchWater > 1 and is_equal_approx(self.linear_velocity.x, 0) and is_equal_approx(self.linear_velocity.y, 0) and is_equal_approx(self.linear_velocity.z, 0):
+		print("Almost 0!")
+		self.linear_velocity.y = 20
+	
+	apply_central_force(get_gravity() * mass * delta)
 	
 	if incline:
-		#linear_velocity.y = inclineBoost
 		apply_central_force(inclineBoost)
 	
 	#print("ship linear velocity = ", linear_velocity) # Debugging velocity issues
@@ -46,13 +45,11 @@ func _physics_process(delta: float) -> void:
 # Interact with water function
 func enterWater():
 	touchWater += 1
-	inWater = true
 	print("touched water! new value = ", touchWater)
 func exitWater():
 	touchWater -= 1
 	print("exited water! new value = ", touchWater)
 	if touchWater <= 0:
-		inWater = false
 		print("EXITING WATER COMPLETELY")
 		set_constant_force(Vector3.ZERO)
 
@@ -75,17 +72,20 @@ func on_floor():
 
 # Movement adjustment
 func move():
-	var massAssist = max(1, mass / 2)
+	var massAssist = max(1, mass * 0.75)
+	var buoyancy = get_gravity() * mass * 2
 	if direction == 0: # Forward
-		set_constant_force(massAssist * Vector3(100, 0, 0))
+		apply_central_force(massAssist * Vector3(400, buoyancy.y, 0))
+		#print("Applying force in the direction: " + str(direction))
 	elif direction == -2: # Left
-		set_constant_force(massAssist * Vector3(0, 0, -100))
+		apply_central_force(massAssist * Vector3(0, buoyancy.y, -400))
 	elif direction == 2: # Right
-		set_constant_force(massAssist * Vector3(0, 0, 100))
+		apply_central_force(massAssist * Vector3(0, buoyancy.y, 400))
+		#print("Applying force in the direction: " + str(direction))
 	elif direction == -1: # Diagonally Left
-		set_constant_force(massAssist * Vector3(75, 0, -75))
+		apply_central_force(massAssist * Vector3(400, buoyancy.y, -400))
 	elif direction == 1: # Diagonally Right
-		set_constant_force(massAssist * Vector3(75, 0, 75))
+		apply_central_force(massAssist * Vector3(400, buoyancy.y, 400))
 
 func turn(newDir):
 	direction = newDir

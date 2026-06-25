@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://584jurur1471"]
+[gd_scene format=3 uid="uid://584jurur1471"]
 
 [ext_resource type="Script" uid="uid://bluyjt2e8orxu" path="res://Scripts/area.gd" id="1_esurj"]
 
@@ -35,50 +35,50 @@ size = Vector3(50, 35, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_25wgu"]
 size = Vector3(50, 35, 1)
 
-[node name="BasicArea" type="Node3D" groups=["hasRocks"]]
+[node name="BasicArea" type="Node3D" unique_id=1400919865 groups=["hasRocks"]]
 script = ExtResource("1_esurj")
 numLilRocks = 15
 
-[node name="Water" type="StaticBody3D" parent="."]
+[node name="Water" type="StaticBody3D" parent="." unique_id=609746241]
 collision_layer = 3
 collision_mask = 3
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Water"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Water" unique_id=1872957348]
 mesh = SubResource("BoxMesh_esurj")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Water"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water" unique_id=1033108790]
 shape = SubResource("BoxShape3D_2mnms")
 debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
 
-[node name="WaterArea" type="Area3D" parent="Water" groups=["water"]]
+[node name="WaterArea" type="Area3D" parent="Water" unique_id=1985998892 groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 collision_layer = 3
 collision_mask = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" groups=["water"]]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water/WaterArea" unique_id=1653736805 groups=["water"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_751tr")
 
-[node name="RightWall" type="StaticBody3D" parent="."]
+[node name="RightWall" type="StaticBody3D" parent="." unique_id=1311118012]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, 25.5)
 collision_layer = 3
 collision_mask = 3
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RightWall"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RightWall" unique_id=1063794010]
 mesh = SubResource("BoxMesh_qww6o")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RightWall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightWall" unique_id=747126184]
 shape = SubResource("BoxShape3D_wiq44")
 
-[node name="LeftWall" type="StaticBody3D" parent="."]
+[node name="LeftWall" type="StaticBody3D" parent="." unique_id=1579479540]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 17, -25.5)
 collision_layer = 3
 collision_mask = 3
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftWall"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftWall" unique_id=1411937141]
 mesh = SubResource("BoxMesh_23y4h")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftWall"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftWall" unique_id=453672544]
 shape = SubResource("BoxShape3D_25wgu")
 
 [connection signal="body_entered" from="Water/WaterArea" to="." method="_on_water_area_body_entered"]

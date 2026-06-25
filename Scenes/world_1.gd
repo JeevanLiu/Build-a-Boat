@@ -22,7 +22,7 @@ var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 #@onready var possibleAreas = [fastAreaScene, cornerAreaScene]
 
 
-@onready var numAreas = 4 # Change to make more areas spawn
+@onready var numAreas = 100 # Change to make more areas spawn
 @onready var areaList = [] # List of procedurally generated areas
 @onready var totalSpaceX = 0 # Displacement between areas on the X
 @onready var totalSpaceY = 0 # Displacement between areas on the Y
@@ -142,14 +142,6 @@ func createMap():
 	
 	loadArea(endingAreaScene)
 
-func _on_water_area_body_entered(body: Node3D) -> void:
-	if body.is_in_group("player") or body.is_in_group("Blocks"):
-		body.enterWater()
-
-func _on_water_area_body_exited(body: Node3D) -> void:
-	if body.is_in_group("player") or body.is_in_group("Blocks"):
-		body.exitWater()
-
 func launch():
 	Globals.launched = true
 	$LaunchAnimation.play("Launch")
@@ -161,7 +153,7 @@ func launch():
 
 func unlaunch(win: bool): # If we won then win = true
 	# Map
-	$LaunchAnimation.play_backwards()
+	$LaunchAnimation.play("Launch", -1, -100, true)
 	Globals.launched = false
 	# Make a button/menu for customizing the number of areas and areas that can exist
 	totalSpaceX = 0 # Displacement between areas on the X
@@ -176,8 +168,11 @@ func unlaunch(win: bool): # If we won then win = true
 	if win:
 		amountWon += 100
 	player.adjMoney(true, amountWon)
+	player.health = player.maxHealth
+	player.updateHealth()
 	player.position = Vector3(-20, 15, 0)
 	$"Player/Settings/LaunchButton".show()
+	player.getPlayerBlocks()
 	
 	# Boat
 	ship.freeze = true
