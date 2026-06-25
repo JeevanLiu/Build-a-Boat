@@ -19,6 +19,7 @@ size = Vector3(1.05, 0.55, 1.05)
 shape = SubResource("BoxShape3D_2tuti")
 script = ExtResource("1_2tuti")
 health = 3.0
+maxHealth = 3.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1217016381]
 mesh = SubResource("BoxMesh_55cx1")

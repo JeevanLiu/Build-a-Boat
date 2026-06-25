@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cus1mvva2m3ic"]
+
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_45q55"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r2mk3"]
+transparency = 1
+albedo_color = Color(0.6313726, 0.7647059, 0.9411765, 0.09411765)
+stencil_flags = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_t5cx3"]
+material = SubResource("StandardMaterial3D_r2mk3")
+
+[node name="GlassBlock" unique_id=1021266519 instance=ExtResource("1_45q55")]
+health = 1.0
+maxHealth = 1.0
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_t5cx3")

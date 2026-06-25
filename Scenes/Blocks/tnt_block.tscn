@@ -15,6 +15,7 @@ radius = 3.0
 
 [node name="TNTBlock" unique_id=1021266519 groups=["Explodes"] instance=ExtResource("1_diedf")]
 health = 1.0
+maxHealth = 1.0
 luck = 0
 acidEndurance = 0.001
 

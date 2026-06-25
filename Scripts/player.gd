@@ -12,9 +12,9 @@ extends CharacterBody3D
 @onready var waterSpeed = 1
 
 # Player specific count variables
-@onready var blockCountList = [55, 55, 55, 55, 55, 55, 55, 55, 55]
+@onready var blockCountList = []
 # Decrement during placement, read off of a file or something, OR DATABASE, add when gachad/bought
-# But yeah base is 55 for now, 0 later
+# But yeah base is 55 for now, 0 later... added in _ready
 @onready var money = 1000
 # LATER - Start with 100 or so, enough for baby gacha, then yeh
 @onready var health = 100
@@ -29,6 +29,7 @@ extends CharacterBody3D
 @onready var moneyDis = $"StatDisplay/Current Money"
 @onready var healthDis = $"StatDisplay/Current Health"
 @onready var cameraDist = $Camera/SpringArm3D
+@onready var settings = $Settings
 
 # Area Specific Variables
 @onready var poisoned = false
@@ -54,6 +55,9 @@ func _input(event):
 		sprint = 3
 	if Input.is_action_just_released("sprint"):
 		sprint = 1
+	# Settings open on esc
+	if Input.is_action_just_pressed("ui_text_clear_carets_and_selection"):
+		settings.changeMenu()
 	
 	# Handles the camera... Thank you Jus
 	if (event is InputEventMouseMotion):
@@ -150,6 +154,10 @@ func _physics_process(delta: float) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	# DELETE LATER - THIS IS FOR ADDING 55 BLOCKS FOR ALL BLOCKS
+	for i in range(0, len(bpz.blocks)):
+		blockCountList.append(55)
 	
 	# Updates Player Display
 	updateMoney()

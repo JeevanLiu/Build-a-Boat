@@ -12,6 +12,7 @@ material = SubResource("StandardMaterial3D_7fs7w")
 
 [node name="WoodBlock" unique_id=1372670183 instance=ExtResource("1_7fs7w")]
 health = 10.0
+maxHealth = 10.0
 endurance = 0.5
 luck = 5
 acidEndurance = 0.25

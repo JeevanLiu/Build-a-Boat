@@ -33,6 +33,7 @@ SpeedUp=""
 Ship=""
 Rocks=""
 Explodes="Anything that causes an explosion when ded"
+LifeSteal="Things that steal Player HP"
 
 [input]
 

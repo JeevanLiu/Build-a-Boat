@@ -12,6 +12,7 @@ material = SubResource("StandardMaterial3D_g44do")
 
 [node name="Obsidian" unique_id=1021266519 instance=ExtResource("1_cm8w1")]
 health = 10.0
+maxHealth = 10.0
 endurance = 4.0
 luck = 2
 acidEndurance = 10.0

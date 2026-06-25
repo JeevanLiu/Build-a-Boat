@@ -13,10 +13,10 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_settings_pressed() -> void:
-	numAreas.text = str(world.numAreas)
 	changeMenu()
 
 func changeMenu():
+	numAreas.text = str(world.numAreas)
 	for child in self.get_children():
 		if child != $Settings and child != $LaunchButton:
 			child.visible = !child.visible

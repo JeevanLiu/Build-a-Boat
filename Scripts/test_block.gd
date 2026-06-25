@@ -4,6 +4,7 @@ extends CollisionShape3D
 # Endurance - Makes the block sturdier (in case I wanna have upgrades of sorts or health restore stuff)
 # Luck - Chance to not take damage (maybe create fun blocks with high luck but can only take 1 hit if unlucky)
 @export var health = 5.0
+@export var maxHealth = 5.0
 @export var endurance = 1.0
 @export var luck = 1
 
@@ -46,8 +47,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	# Kill the block when it dies
-	dies()
 	
 	# Block damage logic
 	var touching = $DamageArea.get_overlapping_bodies()
@@ -145,3 +144,17 @@ func damage(amount):
 	# Luck logic:
 	if randf_range(0, 100) > luck:
 		health -= (amount / endurance)
+	if self.health <= 0:
+		dies()
+	elif self.health >= 250:
+		self.health = 250 # Maximum health capped at 250 for healing blocks
+
+
+func _on_damage_area_body_entered(body: Node3D) -> void:
+	if Globals.launched:
+		if self.is_in_group("LifeSteal"):
+			if self.health < 5 and player.health >= 10:
+				player.damage(5)
+				self.health += 10
+				self.endurance += 0.5
+				self.acidEndurance += 0.25

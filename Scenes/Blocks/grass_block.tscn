@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://d06ui5ad04rds"]
+
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_bnwcw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ucy6"]
+transparency = 1
+albedo_color = Color(0.4, 0.78039217, 0.25882354, 1)
+stencil_flags = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_m061a"]
+material = SubResource("StandardMaterial3D_8ucy6")
+
+[node name="GrassBlock" unique_id=1021266519 instance=ExtResource("1_bnwcw")]
+health = 5.0
+endurance = 0.25
+luck = 5
+acidEndurance = 100.0
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_m061a")

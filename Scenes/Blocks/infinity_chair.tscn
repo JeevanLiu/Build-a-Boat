@@ -11,6 +11,7 @@ size = Vector3(1, 0.5, 1)
 
 [node name="InfinityChair" unique_id=1334669256 instance=ExtResource("1_sfwi6")]
 health = 1.0
+maxHealth = 1.0
 endurance = -1.0
 luck = 101
 acidEndurance = -1.0

@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://d2v17187ylhp2"]
+
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_px44w"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_px44w"]
+transparency = 1
+albedo_color = Color(0.12941177, 0.20392157, 0.9098039, 1)
+stencil_flags = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_6ejbd"]
+material = SubResource("StandardMaterial3D_px44w")
+
+[node name="BasicBlock" unique_id=1021266519 instance=ExtResource("1_px44w")]
+health = 1.0
+maxHealth = 25.0
+luck = 3
+acidEndurance = -0.5
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_6ejbd")

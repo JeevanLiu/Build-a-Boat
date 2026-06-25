@@ -12,6 +12,7 @@ material = SubResource("StandardMaterial3D_0i082")
 
 [node name="InfinityBlock" unique_id=1021266519 instance=ExtResource("1_aodlk")]
 health = 1.0
+maxHealth = 1.0
 endurance = -1.0
 luck = 101
 acidEndurance = -1.0

@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://e3uswttmmd3j"]
+
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_mj0k1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0thc1"]
+transparency = 1
+albedo_color = Color(0.4756047, 0.025830444, 0.0824121, 1)
+stencil_flags = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_gq7oa"]
+material = SubResource("StandardMaterial3D_0thc1")
+
+[node name="VampireBlock" unique_id=1021266519 groups=["LifeSteal"] instance=ExtResource("1_mj0k1")]
+health = 1.0
+maxHealth = 50.0
+endurance = 5.0
+luck = 25
+acidEndurance = 2.5
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_gq7oa")
+
+[node name="DamageArea" parent="." index="1" unique_id=2052375136 groups=["LifeSteal"]]
