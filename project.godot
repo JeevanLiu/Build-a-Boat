@@ -34,6 +34,7 @@ Ship=""
 Rocks=""
 Explodes="Anything that causes an explosion when ded"
 LifeSteal="Things that steal Player HP"
+Heal="Anything that heals the Player"
 
 [input]
 

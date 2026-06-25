@@ -26,6 +26,9 @@ extends CollisionShape3D
 # Chair/Sitting
 @onready var sitting = false
 
+# Healing timer
+@onready var healable = true
+
 # preview mode for before placing
 var previewMode = false
 
@@ -158,3 +161,11 @@ func _on_damage_area_body_entered(body: Node3D) -> void:
 				self.health += 10
 				self.endurance += 0.5
 				self.acidEndurance += 0.25
+		elif self.is_in_group("Heal"):
+			if healable:
+				healable = false
+				player.health += 5
+				player.updateHealth()
+				$HealTimer.start()
+				await $HealTimer.timeout
+				healable = true

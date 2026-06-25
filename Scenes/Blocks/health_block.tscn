@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://qjy6ch0nidik"]
+
+[ext_resource type="PackedScene" uid="uid://dgia11lbgjhq8" path="res://Scenes/Blocks/block.tscn" id="1_2yrkg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y4ici"]
+transparency = 1
+albedo_color = Color(1, 0.30588236, 0.2901961, 1)
+stencil_flags = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_8w3pw"]
+material = SubResource("StandardMaterial3D_y4ici")
+
+[node name="HealthBlock" unique_id=1021266519 groups=["Heal"] instance=ExtResource("1_2yrkg")]
+health = 10.0
+maxHealth = 10.0
+endurance = 0.25
+luck = 5
+
+[node name="MeshInstance3D" parent="." index="0" unique_id=42661347]
+mesh = SubResource("BoxMesh_8w3pw")
+
+[node name="HealTimer" type="Timer" parent="." index="2" unique_id=1188709157]
+wait_time = 30.0
