@@ -31,7 +31,7 @@ var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 @onready var nextArea = 1 # Ensures the first level is a basic level
 
 @onready var player = $Player
-@onready var ship = $Ship
+@onready var ships = $ShipParts
 @onready var blockZone = $BlockPlacementZone
 @onready var parentArea = $ParentArea
 
@@ -149,8 +149,9 @@ func launch():
 	
 	# Unfreezes blocks when the water shows up
 	await get_tree().create_timer(0.5).timeout
-	ship.freeze = false
-	ship.turn(0)
+	for ship in ships.get_children():
+		ship.freeze = false
+		ship.turn(0)
 
 func unlaunch(win: bool): # If we won then win = true
 	# Map
@@ -176,13 +177,10 @@ func unlaunch(win: bool): # If we won then win = true
 	player.getPlayerBlocks()
 	
 	# Boat
-	ship.freeze = true
-	ship.position = Vector3.ZERO
-	ship.rotation = Vector3.ZERO
-	ship.linear_velocity = Vector3.ZERO
-	for child in ship.get_children():
-		child.queue_free()
-	
-	# For placed blocks:
-	# Move the BPZ/Actual location of where the blocks are to be recentered
-	# Also figure out why the player will not move on the starting area when launching 2nd time 
+	for ship in ships.get_children():
+		ship.freeze = true
+		ship.position = Vector3.ZERO
+		ship.rotation = Vector3.ZERO
+		ship.linear_velocity = Vector3.ZERO
+		for child in ship.get_children():
+			child.queue_free()

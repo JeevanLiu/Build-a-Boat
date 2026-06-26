@@ -13,7 +13,7 @@ extends CollisionShape3D
 
 # Parent
 @onready var ship = $".."
-@onready var player = $"../../Player"
+@onready var player = get_node("/root/World1/Player")
 
 @onready var damageTouching = []
 @onready var inWater = false

@@ -22,8 +22,9 @@ extends Node3D
 @onready var blockIndex = 0
 @onready var test_blocc = blocks[blockIndex]
 
-@onready var player = $"../Player"
-@onready var ship = $"../Ship"
+@onready var player = get_node("/root/World1/Player")
+@onready var ships = get_node("/root/World1/ShipParts")
+@onready var shipScript = load("res://Scripts/ship.gd")
 
 # funny preview blocc
 var preview_blocc
@@ -36,6 +37,7 @@ var max : Vector3
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print(get_path())
 	min = ($PlacementZoneRange.global_position - $PlacementZoneRange.shape.size*.5).round()
 	max = ($PlacementZoneRange.global_position + $PlacementZoneRange.shape.size*.5).round()
 
@@ -60,7 +62,12 @@ func placeBlock(location : Vector3, id : String):
 		var blocc = test_blocc.instantiate()
 		blocc.previewMode = false
 		blocc.global_position = location
-		ship.add_child(blocc)
+		
+		if ships.get_child_count() == 0:
+			createShip(blocc)
+		else:
+			if !addRoutine(blocc, location):
+				createShip(blocc)
 
 #region previewBlock
 
@@ -77,7 +84,7 @@ func createPreviewBlock():
 	
 	preview_blocc = test_blocc.instantiate()
 	preview_blocc.previewMode = true
-	ship.add_child(preview_blocc)
+	self.add_child(preview_blocc)
 
 func deletePreviewBlock():
 	if (preview_blocc):
@@ -85,6 +92,37 @@ func deletePreviewBlock():
 
 #endregion
 
+func createShip(block):
+	var newShip = RigidBody3D.new()
+	newShip.freeze = true
+	newShip.set_script(shipScript)
+	ships.add_child(newShip)
+	newShip.add_to_group("Ship")
+	newShip.add_child(block)
+
+func addRoutine(blocc, loc):
+	for ship in ships.get_children():
+		for block in ship.get_children():
+			print("Our diff in length is " + str(abs((loc - block.global_position).length())))
+			if abs((loc - block.global_position).length()) < 1.5:
+				print("We're a ship!")
+				ship.add_child(blocc)
+				# Combining ships:
+				var shipsL = [ship]
+				for i in range(ships.get_child_count()):
+					combineShips(shipsL, loc, ship)
+				return true
+
+func combineShips(shipsL, loc, ship):
+	for ship2 in ships.get_children():
+		if !ship2 in shipsL:
+			for block2 in ship2.get_children():
+					if abs((loc - block2.global_position).length()) < 1.5:
+						print("More ships! Combine time!")
+						shipsL.append(ship2)
+						for moveBlock in ship2.get_children():
+							moveBlock.reparent(ship)
+						ship2.queue_free()
 func scrollBlock(up: bool):
 	if up:
 		blockIndex += 0.5

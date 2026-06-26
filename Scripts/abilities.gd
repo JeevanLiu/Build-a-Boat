@@ -2,7 +2,7 @@ extends Node2D
 
 # Other things
 @onready var player = self.get_parent()
-@onready var ship = $"../../Ship"
+@onready var ships = $"../../ShipParts"
 
 # Cooldown and such vars
 @onready var oneAtATime = true
@@ -28,13 +28,15 @@ func _process(delta: float) -> void:
 func freezeShip():
 	if freezable and oneAtATime:
 		freezable = false
-		ship.sleeping = true
-		ship.freeze = true
+		for ship in ships.get_children():
+			ship.sleeping = true
+			ship.freeze = true
 		oneAtATime = false
 		await get_tree().create_timer(5).timeout
 		oneAtATime = true
-		ship.sleeping = false
-		ship.freeze = false
+		for ship in ships.get_children():
+			ship.sleeping = false
+			ship.freeze = false
 		await get_tree().create_timer(30).timeout
 		freezable = true
 
@@ -42,43 +44,45 @@ func freezeShip():
 func jumpShip():
 	if jumpable and oneAtATime:
 		jumpable = false
-		ship.specialCase = true
-		match ship.direction:
-			0:
-				ship.linear_velocity = Vector3(12.5, 25, 0)
-			-1:
-				ship.linear_velocity = Vector3(6, 25, -6)
-			1:
-				ship.linear_velocity = Vector3(6, 25, 6)
-			-2:
-				ship.linear_velocity = Vector3(0, 25, -12.5)
-			2:
-				ship.linear_velocity = Vector3(0, 25, 12.5)
+		for ship in ships.get_children():
+			ship.specialCase = true
+			match ship.direction:
+				0:
+					ship.linear_velocity = Vector3(12.5, 25, 0)
+				-1:
+					ship.linear_velocity = Vector3(6, 25, -6)
+				1:
+					ship.linear_velocity = Vector3(6, 25, 6)
+				-2:
+					ship.linear_velocity = Vector3(0, 25, -12.5)
+				2:
+					ship.linear_velocity = Vector3(0, 25, 12.5)
 		await get_tree().create_timer(2.5).timeout
-		ship.specialCase = false
+		for ship in ships.get_children():
+			ship.specialCase = false
 		#await get_tree().create_timer(25).timeout
 		jumpable = true
 
 # Uncap speed
 func uncapSpeed():
-	print(speedable)
 	if speedable and oneAtATime:
 		speedable = false
-		ship.specialCase = true
+		for ship in ships.get_children():
+			ship.specialCase = true
 		await get_tree().create_timer(10).timeout
-		ship.specialCase = false
+		for ship in ships.get_children():
+			ship.specialCase = false
 		await get_tree().create_timer(60).timeout
 		speedable = true
 
 func healBlocks():
 	if blockHealable:
 		blockHealable = false
-		for child in ship.get_children():
-			print("I am " + str(child) + ", my health is " + str(child.health) + "and my max health is " + str(child.maxHealth))
-			child.health += 5
-			if child.health > child.maxHealth:
-				child.health = child.maxHealth
-			print("AFTER HEALTH UP I am " + str(child) + ", my health is " + str(child.health) + "and my max health is " + str(child.maxHealth))
+		for ship in ships.get_children():
+			for child in ship.get_children():
+				child.health += 5
+				if child.health > child.maxHealth:
+					child.health = child.maxHealth
 		await get_tree().create_timer(60).timeout
 		blockHealable = true
 

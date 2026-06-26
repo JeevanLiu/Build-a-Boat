@@ -25,7 +25,7 @@ extends CharacterBody3D
 
 # Going down the list...
 @onready var camera = $Camera
-@onready var bpz = $"../BlockPlacementZone"
+@onready var bpz = get_node("/root/World1/BlockPlacementZone")
 @onready var cblockDis = $"StatDisplay/Current Block"
 @onready var moneyDis = $"StatDisplay/Current Money"
 @onready var healthDis = $"StatDisplay/Current Health"
@@ -163,6 +163,7 @@ func _physics_process(delta: float) -> void:
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print(get_path())
 	getPlayerBlocks()
 	
 	# Updates Player Display

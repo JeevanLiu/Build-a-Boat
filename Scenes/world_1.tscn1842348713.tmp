@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://p8acpf3twv13" path="res://Scenes/world_1.gd" id="1_d4kua"]
 [ext_resource type="PackedScene" uid="uid://bkdsnx3e8kqsg" path="res://Scenes/player.tscn" id="2_brd3p"]
 [ext_resource type="Script" uid="uid://dnyykc0kbpqvm" path="res://Scripts/block_placement_zone.gd" id="3_ax6sa"]
+[ext_resource type="Script" uid="uid://deas84vsetq5e" path="res://Scripts/ship.gd" id="4_d4kua"]
 [ext_resource type="Script" uid="uid://bluyjt2e8orxu" path="res://Scripts/area.gd" id="5_12jk7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nsk3r"]
@@ -90,7 +91,7 @@ size = Vector3(50, 1, 50)
 [sub_resource type="BoxShape3D" id="BoxShape3D_dksw6"]
 size = Vector3(50, 0.25, 50)
 
-[node name="World1" type="Node3D" unique_id=247978236]
+[node name="World 1" type="Node3D" unique_id=247978236]
 script = ExtResource("1_d4kua")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1707856593]
@@ -151,6 +152,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_dksw6")
 
 [node name="ShipParts" type="Node3D" parent="." unique_id=2006927729]
+
+[node name="Ship" type="RigidBody3D" parent="ShipParts" unique_id=1550625643 groups=["Ship"]]
+inertia = Vector3(1, 1, 1)
+freeze = true
+linear_damp = 0.5
+angular_damp = 10.0
+script = ExtResource("4_d4kua")
 
 [connection signal="body_entered" from="Water/Water/WaterArea" to="Water" method="_on_water_area_body_entered"]
 [connection signal="body_exited" from="Water/Water/WaterArea" to="Water" method="_on_water_area_body_exited"]

@@ -1,7 +1,6 @@
 extends Node3D
 
 @onready var world = $"../.."
-@onready var ship = $"../../Ship"
 @onready var player = $"../../Player"
 
 # Types of rocks
