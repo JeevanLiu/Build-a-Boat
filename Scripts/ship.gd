@@ -43,6 +43,23 @@ func _physics_process(delta: float) -> void:
 		apply_central_force(inclineBoost)
 	
 	#print("ship linear velocity = ", linear_velocity) # Debugging velocity issues
+	
+	# Forces that oppose motion
+	if self.angular_velocity.x > 2:
+		self.angular_velocity.x = 2
+	elif self.angular_velocity.x < -2:
+		self.angular_velocity.x = -2
+	if self.angular_velocity.y > 2:
+		self.angular_velocity.y = 2
+	elif self.angular_velocity.y < -2:
+		self.angular_velocity.y = -2
+	if self.angular_velocity.z > 2:
+		self.angular_velocity.z = 2
+	elif self.angular_velocity.z < -2:
+		self.angular_velocity.z = -2
+	
+	self.angular_damp = self.mass * 50
+	#print("Ship angular velocity: " + str(self.angular_velocity))
 
 # Interact with water function
 func enterWater():

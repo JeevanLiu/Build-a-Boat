@@ -12,8 +12,9 @@ extends CollisionShape3D
 @export var acidEndurance = 1.0
 
 # Parent
-@onready var ship = $".."
+@onready var ships = get_parent().get_parent()
 @onready var player = get_node("/root/World1/Player")
+@onready var world = get_node("/root/World1")
 
 @onready var damageTouching = []
 @onready var inWater = false
@@ -126,22 +127,28 @@ func sit():
 
 # Explosion Function
 func explode():
-	# Damage
+	# Damage Blocks
+	self.reparent(world)
 	var bodies = $BlastRadius.get_overlapping_bodies()
-	for sibling in ship.get_children():
-		if abs(sibling.position - self.position) < Vector3(3, 3, 3):
-			sibling.damage(2)
-	if abs(player.global_position - self.global_position) < Vector3(3, 3, 3):
+	var myPos = self.global_position
+	for ship in ships.get_children():
+		for relative in ship.get_children():
+			if abs((relative.global_position - myPos).length()) < 2:
+				relative.damage(2)
+		# Impulse effect
+		var epic = myPos - ship.global_position
+		var epic2 = epic.normalized()
+		ship.apply_impulse(epic2, myPos)
+		print("Applied " + str(epic2) + " in the direction" + str(epic))
+	
+	# Player
+	if abs((player.global_position - myPos).length()) < 2:
 		player.damage(15)
+	
+	# Rocks
 	for body in bodies:
 		if body.is_in_group("Rocks"):
 			body.damage(5)
-	
-	# Impulse effect
-	var epic = self.global_position - ship.global_position
-	var epic2 = epic.normalized()
-	ship.apply_impulse(epic2, self.global_position)
-	print("Applied " + str(epic2) + " in the direction" + str(epic))
 
 func damage(amount):
 	# Luck logic:

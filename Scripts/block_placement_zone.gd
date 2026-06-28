@@ -104,7 +104,7 @@ func addRoutine(blocc, loc):
 	for ship in ships.get_children():
 		for block in ship.get_children():
 			print("Our diff in length is " + str(abs((loc - block.global_position).length())))
-			if abs((loc - block.global_position).length()) < 1.5:
+			if abs((loc - block.global_position).length()) < 1.75:
 				print("We're a ship!")
 				ship.add_child(blocc)
 				# Combining ships:
