@@ -103,8 +103,8 @@ func createShip(block):
 func addRoutine(blocc, loc):
 	for ship in ships.get_children():
 		for block in ship.get_children():
-			print("Our diff in length is " + str(abs((loc - block.global_position).length())))
-			if abs((loc - block.global_position).length()) < 1.75:
+			print("Our diff in length is " + str((loc - block.global_position).length()))
+			if (loc - block.global_position).length() < 1.75:
 				print("We're a ship!")
 				ship.add_child(blocc)
 				# Combining ships:
@@ -117,7 +117,7 @@ func combineShips(shipsL, loc, ship):
 	for ship2 in ships.get_children():
 		if !ship2 in shipsL:
 			for block2 in ship2.get_children():
-					if abs((loc - block2.global_position).length()) < 1.5:
+					if (loc - block2.global_position).length() < 1.5:
 						print("More ships! Combine time!")
 						shipsL.append(ship2)
 						for moveBlock in ship2.get_children():

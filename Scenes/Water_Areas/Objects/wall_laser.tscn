@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c56lpp32qyv8j"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_se5uj"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.7176471)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_os8ic"]
+material = SubResource("StandardMaterial3D_se5uj")
+top_radius = 0.25
+bottom_radius = 0.25
+height = 50.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_i065g"]
+height = 50.0
+radius = 0.25
+
+[node name="WallLaser" type="Node3D" unique_id=973753892 groups=["Laser"]]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1152283928 groups=["Laser"]]
+mesh = SubResource("CylinderMesh_os8ic")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1283156073]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=602930033]
+shape = SubResource("CylinderShape3D_i065g")

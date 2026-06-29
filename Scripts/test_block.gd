@@ -11,6 +11,8 @@ extends CollisionShape3D
 # Other stats
 @export var acidEndurance = 1.0
 
+@onready var alive = true
+
 # Parent
 @onready var ships = get_parent().get_parent()
 @onready var player = get_node("/root/World1/Player")
@@ -29,6 +31,9 @@ extends CollisionShape3D
 
 # Healing timer
 @onready var healable = true
+
+# Prevents infinite recursion on explosion
+@onready var notExploded = true
 
 # preview mode for before placing
 var previewMode = false
@@ -51,7 +56,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	
 	# Block damage logic
 	var touching = $DamageArea.get_overlapping_bodies()
 	for obj in touching:
@@ -60,9 +64,13 @@ func _physics_process(delta: float) -> void:
 			self.damage(1)
 		elif obj.is_in_group("hasPoison"):
 			poisonTick()
+	var otherTouching = $DamageArea.get_overlapping_areas()
+	for obj in otherTouching:
+		if obj.is_in_group("Laser"):
+			self.damage(0.1)
 	
 	# Handles sitting related events
-	if abs(player.global_position - self.global_position) < Vector3(3, 3, 3) and Input.is_action_just_pressed("right_click"):
+	if (player.global_position - self.global_position).length() < 3 and Input.is_action_just_pressed("right_click"):
 		# Calls sitting when near chairs
 		if self.is_in_group("Sittable"):
 			sit()
@@ -91,7 +99,9 @@ func acidHit():
 
 func dies():
 	if health <= 0:
-		if self.is_in_group("Explodes"):
+		alive = false
+		if self.is_in_group("Explodes") and notExploded:
+			notExploded = false
 			explode()
 		queue_free()
 
@@ -128,12 +138,11 @@ func sit():
 # Explosion Function
 func explode():
 	# Damage Blocks
-	self.reparent(world)
 	var bodies = $BlastRadius.get_overlapping_bodies()
 	var myPos = self.global_position
 	for ship in ships.get_children():
 		for relative in ship.get_children():
-			if abs((relative.global_position - myPos).length()) < 2:
+			if relative.alive and (relative.global_position - myPos).length() < 2:
 				relative.damage(2)
 		# Impulse effect
 		var epic = myPos - ship.global_position
@@ -142,7 +151,7 @@ func explode():
 		print("Applied " + str(epic2) + " in the direction" + str(epic))
 	
 	# Player
-	if abs((player.global_position - myPos).length()) < 2:
+	if (player.global_position - myPos).length() < 2:
 		player.damage(15)
 	
 	# Rocks

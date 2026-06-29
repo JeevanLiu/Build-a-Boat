@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bka3wwvio6067"]
+
+[ext_resource type="PackedScene" uid="uid://584jurur1471" path="res://Scenes/Water_Areas/basic_area.tscn" id="1_hdfvf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_br8ld"]
+albedo_color = Color(0.9275826, 0.28977418, 0.2905647, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_vrt2o"]
+material = SubResource("StandardMaterial3D_br8ld")
+size = Vector3(50, 1, 50)
+
+[node name="LaserArea" unique_id=1400919865 instance=ExtResource("1_hdfvf")]
+numLasers = 5
+
+[node name="MeshInstance3D" parent="Water" parent_id_path=PackedInt32Array(609746241) index="0" unique_id=1872957348]
+mesh = SubResource("BoxMesh_vrt2o")

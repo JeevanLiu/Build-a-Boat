@@ -11,15 +11,16 @@ var cornerAreaScene = preload("res://Scenes/Water_Areas/corner_area.tscn")
 var fastAreaScene = preload("res://Scenes/Water_Areas/fast_area.tscn")
 var evilCannonAreaScene = preload("res://Scenes/Water_Areas/cannon_area.tscn")
 var tidalAreaScene = preload("res://Scenes/Water_Areas/tidal_area.tscn")
+var laserAreaScene = preload("res://Scenes/Water_Areas/laser_area.tscn")
 var crazyAreaScene = preload("res://Scenes/Water_Areas/crazy_area.tscn") # add more objects when i make them
 # Handled separately
 var endingAreaScene = preload("res://Scenes/Water_Areas/ending_area.tscn")
 
 # Functions for calling each scene
-@onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene, crazyAreaScene]
+@onready var possibleAreas = [basicAreaScene, longAreaScene, poisonAreaScene, dropAreaScene, inclineAreaScene, acidRainAreaScene, cornerAreaScene, fastAreaScene, evilCannonAreaScene, tidalAreaScene, laserAreaScene, crazyAreaScene]
 
 # Smaller one used for testing specific areas
-#@onready var possibleAreas = [fastAreaScene, cornerAreaScene]
+#@onready var possibleAreas = [laserAreaScene, cornerAreaScene]
 
 
 @onready var numAreas = 100 # Change to make more areas spawn

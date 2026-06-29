@@ -11,6 +11,7 @@ extends Node3D
 @onready var acidCloud = preload("res://Scenes/Water_Areas/Objects/acid_cloud.tscn")
 @onready var evilCannon = preload("res://Scenes/Water_Areas/Objects/evil_cannon.tscn")
 @onready var ballista = preload("res://Scenes/Water_Areas/Objects/ballista.tscn")
+@onready var wallLaser = preload("res://Scenes/Water_Areas/Objects/wall_laser.tscn")
 
 # Number of rocks
 @export var numLilRocks = 10
@@ -20,6 +21,7 @@ extends Node3D
 @export var numAcidClouds = 0
 @export var numEvilCannons = 0
 @export var numBallistas = 0
+@export var numLasers = 0
 
 
 # Called when the node enters the scene tree for the first time.
@@ -33,6 +35,7 @@ func _ready() -> void:
 	loadClouds(l, w)
 	loadCannons(l, w)
 	loadBallistas(l, w)
+	loadLasers(l, w)
 
 # PRE-GAME LOADING FUNCTIONS
 
@@ -98,6 +101,16 @@ func loadBallistas(l: int, w: int):
 		
 		# Makes newLilRock a child of the scene
 		add_child(newBallista)
+
+func loadLasers(l: int, w: int):
+	for i in range(numLasers):
+		# Sets up newLaser
+		var newLaser = wallLaser.instantiate()
+		# Sets up the position of the newLaser
+		newLaser.position = Vector3(randi_range(-20, 20), randi_range(1, 10), 0)
+		
+		# Makes newLaser a child of the scene
+		add_child(newLaser)
 
 func _physics_process(delta: float) -> void:
 	for body in $Water/WaterArea.get_overlapping_bodies():

@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://b20hckk2j0msd"]
+
+[ext_resource type="Script" uid="uid://p8acpf3twv13" path="res://Scenes/world_1.gd" id="1_d4kua"]
+[ext_resource type="PackedScene" uid="uid://bkdsnx3e8kqsg" path="res://Scenes/player.tscn" id="2_brd3p"]
+[ext_resource type="Script" uid="uid://dnyykc0kbpqvm" path="res://Scripts/block_placement_zone.gd" id="3_ax6sa"]
+[ext_resource type="Script" uid="uid://bluyjt2e8orxu" path="res://Scripts/area.gd" id="5_12jk7"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nsk3r"]
+sky_top_color = Color(0.19607843, 0.90588236, 1, 1)
+sky_horizon_color = Color(0.3372549, 0.5294118, 1, 1)
+sky_curve = 0.08919054
+
+[sub_resource type="Sky" id="Sky_brd3p"]
+sky_material = SubResource("ProceduralSkyMaterial_nsk3r")
+
+[sub_resource type="Environment" id="Environment_ax6sa"]
+background_mode = 2
+sky = SubResource("Sky_brd3p")
+
+[sub_resource type="BoxMesh" id="BoxMesh_i2ice"]
+size = Vector3(50, 1, 75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2ice"]
+albedo_color = Color(0.44048455, 0.47278053, 0.22408327, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e5alk"]
+size = Vector3(50, 1, 75)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ax6sa"]
+size = Vector3(45.5, 40, 45.5)
+
+[sub_resource type="Animation" id="Animation_ax6sa"]
+resource_name = "Launch"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Ground:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -0.01, 0), Vector3(-1, -1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Water:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_d4kua"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Water:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_12jk7"]
+_data = {
+&"Launch": SubResource("Animation_ax6sa"),
+&"RESET": SubResource("Animation_d4kua")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_esurj"]
+albedo_color = Color(0, 1, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_12jk7"]
+material = SubResource("StandardMaterial3D_esurj")
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wyo6c"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dksw6"]
+size = Vector3(50, 0.25, 50)
+
+[node name="World1" type="Node3D" unique_id=247978236]
+script = ExtResource("1_d4kua")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1707856593]
+environment = SubResource("Environment_ax6sa")
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=238698804]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=1789688053]
+mesh = SubResource("BoxMesh_i2ice")
+surface_material_override/0 = SubResource("StandardMaterial3D_i2ice")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=564776221]
+shape = SubResource("BoxShape3D_e5alk")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=462420527]
+transform = Transform3D(-0.7071068, 0.12278781, -0.6963643, 0, 0.9848078, 0.1736482, 0.7071068, 0.12278781, -0.6963643, -33.427906, 2.5461152, -38.620598)
+
+[node name="BlockPlacementZone" type="Node3D" parent="." unique_id=563707361]
+script = ExtResource("3_ax6sa")
+
+[node name="PlacementZoneRange" type="CollisionShape3D" parent="BlockPlacementZone" unique_id=1833875864]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20.5, 0)
+shape = SubResource("BoxShape3D_ax6sa")
+debug_color = Color(0.6862745, 0.2901961, 1, 1)
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." unique_id=1687778767 instance=ExtResource("2_brd3p")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.973772, 6.687216, 5.296829)
+placeBlockDistance = 22
+
+[node name="LaunchAnimation" type="AnimationPlayer" parent="." unique_id=211956769]
+libraries/ = SubResource("AnimationLibrary_12jk7")
+playback_default_blend_time = 5.0
+
+[node name="ParentArea" type="Node3D" parent="." unique_id=1156050511]
+
+[node name="Water" type="Node3D" parent="." unique_id=1704098512]
+script = ExtResource("5_12jk7")
+numLilRocks = 0
+numBigRocks = 0
+
+[node name="Water" type="StaticBody3D" parent="Water" unique_id=2088291616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Water/Water" unique_id=656765539]
+mesh = SubResource("BoxMesh_12jk7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water/Water" unique_id=465365135]
+shape = SubResource("BoxShape3D_wyo6c")
+debug_color = Color(0, 0.6291839, 0.48194093, 0.41960785)
+
+[node name="WaterArea" type="Area3D" parent="Water/Water" unique_id=681124170 groups=["water"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Water/Water/WaterArea" unique_id=364155140 groups=["water"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_dksw6")
+
+[node name="ShipParts" type="Node3D" parent="." unique_id=2006927729]
+
+[connection signal="body_entered" from="Water/Water/WaterArea" to="Water" method="_on_water_area_body_entered"]
+[connection signal="body_exited" from="Water/Water/WaterArea" to="Water" method="_on_water_area_body_exited"]
